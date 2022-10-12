@@ -6,5 +6,5 @@ import sokhoahoccongnghe.phutho.gov.vn.entity.ScienceTopic;
 import java.util.List;
 
 public interface ScienceTopicService {
-   List<ScienceTopicDto> getAll();
+   List<ScienceTopic> getAll();
 }
