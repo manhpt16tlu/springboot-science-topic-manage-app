@@ -2,8 +2,8 @@ package sokhoahoccongnghe.phutho.gov.vn.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import sokhoahoccongnghe.phutho.gov.vn.entity.ScienceTopic;
+import sokhoahoccongnghe.phutho.gov.vn.entity.Topic;
 
 @Repository
-public interface ScienceTopicRepository extends JpaRepository<ScienceTopic,Integer> {
+public interface TopicRepository extends JpaRepository<Topic,Integer> {
 }

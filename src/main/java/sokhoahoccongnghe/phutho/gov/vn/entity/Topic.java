@@ -12,7 +12,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name="de_tai")
-public class ScienceTopic {
+public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ma")
