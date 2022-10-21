@@ -2,6 +2,7 @@ package sokhoahoccongnghe.phutho.gov.vn;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
 
 @SpringBootApplication
 public class SpringbootScienceTopicManageAppApplication {

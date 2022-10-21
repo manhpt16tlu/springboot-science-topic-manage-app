@@ -10,13 +10,15 @@ import java.util.Date;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(TopicServiceException.class)
-    public ResponseEntity<ExceptionResponseModel> topicServiceHandle(TopicServiceException ex){
+    @ExceptionHandler(value = {NotFoundException.class})
+    public ResponseEntity<ExceptionResponseModel> topicServiceHandle(RuntimeException ex){
         ExceptionResponseModel res = ExceptionResponseModel
                 .builder()
-                .mess(ex.getMessage())
+                .message(ex.getMessage())
                 .time(new Date())
                 .build();
-        return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+
     }
+
 }

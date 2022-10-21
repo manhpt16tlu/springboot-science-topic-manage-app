@@ -1,15 +1,18 @@
 package sokhoahoccongnghe.phutho.gov.vn.entity;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="de_tai")
 public class Topic {
@@ -21,9 +24,31 @@ public class Topic {
     @Column(name = "ten",nullable = false)
     private String name;
 
-    @Column(name = "ma_linhvuc",nullable = false)
-    private Integer sectorId;
+    @Column(name="chunhiem",nullable = false)
+    private String manager;
 
-    @Column(name = "ma_trangthai",nullable = false)
-    private Integer statusId = 1;
+    @Column(name="ngaybatdau")
+    @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
+    private Date startDate;
+
+    @Column(name="ngayketthuc")
+    @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
+    private Date endDate;
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING)
+    @Column(name="kinhphi")
+    private Long expense;
+
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name="macoquan",nullable = false)
+    private Organ organ;
+
+//    @Column(name="maketqua")
+//    private Integer resultId = null;
+//
+//    @Column(name = "malinhvuc",nullable = false)
+//    private Integer sectorId;
+//
+//    @Column(name = "matrangthai",nullable = false)
+//    private Integer statusId = 1;
 }
