@@ -1,11 +1,12 @@
 package sokhoahoccongnghe.phutho.gov.vn.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import sokhoahoccongnghe.phutho.gov.vn.dto.OrganDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFieldDto;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Topic;
+import sokhoahoccongnghe.phutho.gov.vn.entity.TopicField;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface TopicMapper {
     List<TopicDto> listEntity2Dto(List<Topic> l);
     OrganDto organ2OrganDto(Organ o); //mapstruct need to mapping topic vs topic dto
     Organ organDto2Organ(OrganDto o); //mapstruct need to mapping topic vs topic dto
+    TopicField fieldDto2Entity(TopicFieldDto t); //mapstruct need to mapping topic vs topic dto
+    TopicFieldDto fieldEntity2Dto(TopicField t);//mapstruct need to mapping topic vs topic dto
 }

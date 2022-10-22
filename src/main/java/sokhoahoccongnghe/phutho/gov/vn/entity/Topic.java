@@ -14,40 +14,41 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="de_tai")
+@Table(name = "de_tai")
 public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ma")
     private Integer id;
 
-    @Column(name = "ten",nullable = false)
+    @Column(name = "ten", nullable = false)
     private String name;
 
-    @Column(name="chunhiem",nullable = false)
+    @Column(name = "chunhiem", nullable = false)
     private String manager;
 
-    @Column(name="ngaybatdau")
+    @Column(name = "ngaybatdau")
     @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
     private Date startDate;
 
-    @Column(name="ngayketthuc")
+    @Column(name = "ngayketthuc")
     @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
     private Date endDate;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING)
-    @Column(name="kinhphi")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @Column(name = "kinhphi")
     private Long expense;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name="macoquan",nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "macoquan", nullable = false)
     private Organ organ;
 
-//    @Column(name="maketqua")
+    //    @Column(name="maketqua")
 //    private Integer resultId = null;
 //
-//    @Column(name = "malinhvuc",nullable = false)
-//    private Integer sectorId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "malinhvuc", nullable = false)
+    private TopicField topicField;
 //
 //    @Column(name = "matrangthai",nullable = false)
 //    private Integer statusId = 1;

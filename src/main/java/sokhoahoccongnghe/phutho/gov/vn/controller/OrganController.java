@@ -13,8 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/organ")
 public class OrganController {
-    @Autowired
-    private OrganMapper organMapper;
+
     @Autowired
     private OrganService organService;
     @PostMapping

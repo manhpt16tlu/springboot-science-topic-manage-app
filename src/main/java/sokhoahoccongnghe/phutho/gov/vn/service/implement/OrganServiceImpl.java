@@ -1,4 +1,4 @@
-package sokhoahoccongnghe.phutho.gov.vn.service;
+package sokhoahoccongnghe.phutho.gov.vn.service.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +7,7 @@ import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.OrganMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.OrganRepository;
+import sokhoahoccongnghe.phutho.gov.vn.service.OrganService;
 
 import java.util.List;
 
@@ -20,7 +21,6 @@ public class OrganServiceImpl implements OrganService {
     @Override
     public OrganDto createOrgan(OrganDto organDto) {
         Organ organEntity = organMapper.dto2Entity(organDto);
-        System.out.println(organEntity);
         Organ  organCreated = organRepository.save(organEntity);
         return organMapper.entity2Dto(organCreated);
     }
