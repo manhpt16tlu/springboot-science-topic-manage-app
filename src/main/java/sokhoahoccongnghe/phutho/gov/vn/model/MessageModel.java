@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public enum MessageModel {
-    REQUEST_SUCCESS("request success"),
-    REQUEST_FAIL("request fail");
+    REQUEST_SUCCESS("Request Success"),
+    REQUEST_FAIL("Request Fail");
     private final String value;
 }

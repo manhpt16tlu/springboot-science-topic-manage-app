@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Topic;
 import sokhoahoccongnghe.phutho.gov.vn.entity.TopicField;
+import sokhoahoccongnghe.phutho.gov.vn.entity.TopicStatus;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ import java.util.List;
 public interface TopicRepository extends JpaRepository<Topic,Integer> {
     List<Topic> findByOrgan(Organ o);
     List<Topic> findByTopicField(TopicField f);
+    List<Topic> findByTopicStatus(TopicStatus s);
 }

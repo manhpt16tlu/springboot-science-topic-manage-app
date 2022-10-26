@@ -6,47 +6,73 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
+import sokhoahoccongnghe.phutho.gov.vn.model.MessageModel;
+import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = {"/api/topic", "/api"})
+@RequestMapping(value = {"/api"})
 public class TopicController {
     @Autowired
     private TopicService topicService;
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<TopicDto> getTopic(@PathVariable(value = "id") Integer id) {
-        TopicDto o = topicService.getTopic(id);
-        return new ResponseEntity<>(o, HttpStatus.OK);
+    @GetMapping("/topic")
+    public ResponseEntity<Object> getTopics() {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getTopics(), true);
     }
 
-    @PostMapping(value = "/organ/{organId}/field/{fieldId}/topic")
-    public ResponseEntity<TopicDto> createTopic(@PathVariable Integer organId, @PathVariable Integer fieldId, @RequestBody TopicDto topicRequest) {
-        return new ResponseEntity<>(topicService.createTopic(organId, fieldId, topicRequest), HttpStatus.CREATED);
+    @GetMapping(value = "/topic/{id}")
+    public ResponseEntity<Object> getTopic(@PathVariable(value = "id") Integer id) {
+        TopicDto topicDto = topicService.getTopic(id);
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicDto, true);
+    }
+
+    @PostMapping(value = "/organ/{organId}/field/{fieldId}/status/{statusId}/topic")
+    public ResponseEntity<Object> createTopic(@PathVariable Integer organId, @PathVariable Integer fieldId,
+                                              @PathVariable Integer statusId,
+                                              @RequestBody TopicDto topicRequest) {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.createTopic(organId, fieldId, statusId,topicRequest), true);
+
     }
 
     @GetMapping(value = "/field/{fieldId}/topic")
-    public ResponseEntity<List<TopicDto>> getTopicsByFieldId(@PathVariable Integer fieldId){
-        return new ResponseEntity<>(topicService.getTopicsByField(fieldId),HttpStatus.OK);
+    public ResponseEntity<Object> getTopicsByFieldId(@PathVariable Integer fieldId) {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getTopicsByField(fieldId), true);
     }
 
     @GetMapping(value = "/organ/{organId}/topic")
-    public ResponseEntity<List<TopicDto>> getTopicsByOrganId(@PathVariable Integer organId) {
-        return new ResponseEntity<>(topicService.getTopicsByOrgan(organId), HttpStatus.OK);
+    public ResponseEntity<Object> getTopicsByOrganId(@PathVariable Integer organId) {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getTopicsByOrgan(organId), true);
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity updateTopic(@PathVariable Integer id, @RequestBody TopicDto topicRequest) {
+    @GetMapping(value = "/status/{statusId}/topic")
+    public ResponseEntity<Object> getTopicsByStatusId(@PathVariable Integer statusId){
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(),HttpStatus.OK,
+                topicService.getTopicsByStatus(statusId),true);
+    }
+
+    @PutMapping(value = "/topic/{id}")
+    public ResponseEntity<Object> updateTopic(@PathVariable Integer id, @RequestBody TopicDto topicRequest) {
         topicService.udpateTopic(id, topicRequest);
-        return ResponseEntity.noContent().build();
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                null, true);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity deleteTopic(@PathVariable Integer id) {
+
+    @DeleteMapping(value = "/topic/{id}")
+    public ResponseEntity<Object> deleteTopic(@PathVariable Integer id) {
         topicService.deleteTopic(id);
-        return ResponseEntity.noContent().build();
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                null, true);
     }
+
+
 
 }

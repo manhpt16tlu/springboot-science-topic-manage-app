@@ -36,8 +36,8 @@ public class TopicFieldServiceImpl implements TopicFieldService {
 
     @Override
     public List<TopicFieldDto> getFields() {
-        List<TopicField> topicFieldList = fieldRepository.findAll();
-        return fieldMapper.listEntity2Dto(topicFieldList) ;
+        List<TopicField> topicFieldListEntity = fieldRepository.findAll();
+        return fieldMapper.listEntity2Dto(topicFieldListEntity) ;
     }
 
     @Override

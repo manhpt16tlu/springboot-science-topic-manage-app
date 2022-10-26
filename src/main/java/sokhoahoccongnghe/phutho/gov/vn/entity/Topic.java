@@ -35,7 +35,6 @@ public class Topic {
     @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
     private Date endDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "kinhphi")
     private Long expense;
 
@@ -43,13 +42,12 @@ public class Topic {
     @JoinColumn(name = "macoquan", nullable = false)
     private Organ organ;
 
-    //    @Column(name="maketqua")
-//    private Integer resultId = null;
-//
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "malinhvuc", nullable = false)
     private TopicField topicField;
-//
-//    @Column(name = "matrangthai",nullable = false)
-//    private Integer statusId = 1;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "matrangthai",nullable = false)
+    private TopicStatus topicStatus;
 }

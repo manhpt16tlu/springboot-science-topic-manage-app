@@ -4,9 +4,11 @@ import org.mapstruct.Mapper;
 import sokhoahoccongnghe.phutho.gov.vn.dto.OrganDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFieldDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicStatusDto;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Topic;
 import sokhoahoccongnghe.phutho.gov.vn.entity.TopicField;
+import sokhoahoccongnghe.phutho.gov.vn.entity.TopicStatus;
 
 import java.util.List;
 
@@ -21,4 +23,6 @@ public interface TopicMapper {
     Organ organDto2Organ(OrganDto o); //mapstruct need to mapping topic vs topic dto
     TopicField fieldDto2Entity(TopicFieldDto t); //mapstruct need to mapping topic vs topic dto
     TopicFieldDto fieldEntity2Dto(TopicField t);//mapstruct need to mapping topic vs topic dto
+    TopicStatusDto statusEntity2Dto(TopicStatus t);
+    TopicStatus statusDto2Entity(TopicStatusDto t);
 }

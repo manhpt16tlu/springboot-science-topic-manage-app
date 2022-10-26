@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sokhoahoccongnghe.phutho.gov.vn.dto.OrganDto;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.OrganMapper;
+import sokhoahoccongnghe.phutho.gov.vn.model.MessageModel;
+import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
 import sokhoahoccongnghe.phutho.gov.vn.service.OrganService;
 
 import java.util.List;
@@ -16,29 +18,34 @@ public class OrganController {
 
     @Autowired
     private OrganService organService;
+
     @PostMapping
-    public ResponseEntity<OrganDto> createOrgan(@RequestBody OrganDto organRequest) {
+    public ResponseEntity<Object> createOrgan(@RequestBody OrganDto organRequest) {
         OrganDto organCreated = organService.createOrgan(organRequest);
-        return new ResponseEntity<>(organCreated, HttpStatus.CREATED);
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK, organCreated,
+                true);
     }
+
     @GetMapping
-    public ResponseEntity<List<OrganDto>> getOrgans(){
-        return new ResponseEntity<>(organService.getOrgans(),HttpStatus.OK);
+    public ResponseEntity<List<OrganDto>> getOrgans() {
+        return new ResponseEntity<>(organService.getOrgans(), HttpStatus.OK);
     }
+
     @GetMapping(value = "/{id}")
-    public ResponseEntity<OrganDto> getOrgan(@PathVariable(value = "id") Integer id){
+    public ResponseEntity<OrganDto> getOrgan(@PathVariable(value = "id") Integer id) {
         OrganDto o = organService.getOrgan(id);
-        return new ResponseEntity<>(o,HttpStatus.OK);
+        return new ResponseEntity<>(o, HttpStatus.OK);
     }
+
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deleteOrgan(@PathVariable(value = "id") Integer id){
+    public ResponseEntity deleteOrgan(@PathVariable(value = "id") Integer id) {
         organService.deleteOrgan(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity updateOrgan(@PathVariable(value = "id") Integer id,@RequestBody OrganDto organRequest){
-        organService.updateOrgan(id,organRequest);
+    public ResponseEntity updateOrgan(@PathVariable(value = "id") Integer id, @RequestBody OrganDto organRequest) {
+        organService.updateOrgan(id, organRequest);
         return ResponseEntity.noContent().build();
     }
 }

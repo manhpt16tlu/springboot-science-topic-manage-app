@@ -21,4 +21,5 @@ public class TopicDto {
     private Long expense;
     private OrganDto organ;
     private TopicFieldDto topicField;
+    private TopicStatusDto topicStatus;
 }
