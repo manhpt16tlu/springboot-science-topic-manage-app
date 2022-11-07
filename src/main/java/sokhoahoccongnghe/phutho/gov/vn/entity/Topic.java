@@ -48,6 +48,10 @@ public class Topic {
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "matrangthai",nullable = false)
+    @JoinColumn(name = "matrangthai", nullable = false)
     private TopicStatus topicStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "maketqua", nullable = false)
+    private TopicResult topicResult;
 }

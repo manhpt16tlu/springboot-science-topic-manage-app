@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/organ")
+@CrossOrigin(origins = "http://localhost:3000")
 public class OrganController {
 
     @Autowired
@@ -27,8 +28,10 @@ public class OrganController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrganDto>> getOrgans() {
-        return new ResponseEntity<>(organService.getOrgans(), HttpStatus.OK);
+    public ResponseEntity<Object> getOrgans(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue =
+            "5") int size,@RequestParam(defaultValue = "") String search) {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                organService.getOrgans(page,size,search), true);
     }
 
     @GetMapping(value = "/{id}")

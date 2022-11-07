@@ -34,6 +34,7 @@ public class TopicStatusServiceImpl implements TopicStatusService {
     }
 
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class})
     public void updateStatus(Integer id,TopicStatusDto statusRequest) {
         TopicStatus statusEntity = this.getStatusEntity(id);
         statusEntity.setTitle(statusRequest.getTitle());

@@ -4,46 +4,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sokhoahoccongnghe.phutho.gov.vn.dto.TopicStatusDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicResultDto;
 import sokhoahoccongnghe.phutho.gov.vn.model.MessageModel;
 import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
-import sokhoahoccongnghe.phutho.gov.vn.service.TopicStatusService;
+import sokhoahoccongnghe.phutho.gov.vn.service.TopicResultService;
 
 @RestController
-@RequestMapping(value = "/api/status")
+@RequestMapping(value="/api/result")
 @CrossOrigin(origins = "http://localhost:3000")
-public class TopicStatusController {
+public class TopicResultController {
     @Autowired
-    private TopicStatusService statusService;
+    private TopicResultService resultService;
 
-    @GetMapping
-    public ResponseEntity<Object> getAllStatus() {
+    @GetMapping()
+    public ResponseEntity<Object> getAllResult(){
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                statusService.getAllStatus(), true);
-    }
-
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Object> getStatus(@PathVariable Integer id) {
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                statusService.getStatus(id), true);
+                resultService.getAllResult(), true);
     }
 
     @PostMapping
-    public ResponseEntity<Object> createStatus(@RequestBody TopicStatusDto statusRequest) {
+    public ResponseEntity<Object> createResult(@RequestBody TopicResultDto resultRequest){
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                statusService.createStatus(statusRequest), true);
+                resultService.createResult(resultRequest), true);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Object> getResult(@PathVariable Integer id){
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                resultService.getResult(id), true);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deleteStatus(@PathVariable Integer id) {
-        statusService.deleteStatus(id);
+    public ResponseEntity<Object> deleteResult(@PathVariable Integer id){
+        resultService.deleteResult(id);
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(),HttpStatus.OK, null,
                 true);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> updateStatus(@PathVariable Integer id,@RequestBody TopicStatusDto statusRequest){
-        statusService.updateStatus(id,statusRequest);
+    public ResponseEntity<Object> updateResult(@PathVariable Integer id,@RequestBody TopicResultDto resultRequest){
+        resultService.updateResult(id,resultRequest);
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(),HttpStatus.OK, null,
                 true);
     }

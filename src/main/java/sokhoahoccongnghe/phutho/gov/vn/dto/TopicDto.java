@@ -22,4 +22,5 @@ public class TopicDto {
     private OrganDto organ;
     private TopicFieldDto topicField;
     private TopicStatusDto topicStatus;
+    private TopicResultDto topicResult;
 }

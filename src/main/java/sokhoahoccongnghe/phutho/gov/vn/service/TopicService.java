@@ -7,7 +7,7 @@ import java.util.List;
 public interface TopicService {
    List<TopicDto> getTopicsByOrgan(Integer organId);
    TopicDto getTopic(Integer id);
-   TopicDto createTopic(Integer organId,Integer fieldId,Integer statusId,TopicDto topicRequest);
+   TopicDto createTopic(Integer organId,Integer fieldId,Integer statusId,Integer resultId,TopicDto topicRequest);
    void udpateTopic(Integer id,TopicDto topicRequest);
    void deleteTopic(Integer id);
    List<TopicDto> getTopicsByField(Integer fieldId);

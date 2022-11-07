@@ -12,6 +12,7 @@ import sokhoahoccongnghe.phutho.gov.vn.service.TopicFieldService;
 
 @RestController
 @RequestMapping(value = "/api/field")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TopicFieldController {
     @Autowired
     private TopicFieldService topicFieldService;

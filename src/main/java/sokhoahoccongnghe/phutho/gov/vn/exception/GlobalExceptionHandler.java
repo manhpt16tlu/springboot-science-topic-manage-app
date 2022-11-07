@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {RuntimeException.class})
-    public ResponseEntity<Object> hanldeGeneral(Exception ex) {
+    public ResponseEntity<Object> handleeGeneral(Exception ex) {
         ex.printStackTrace();
         return ResponseBaseModel.responseBuidler("unknown server error", HttpStatus.INTERNAL_SERVER_ERROR, null
                 , false);

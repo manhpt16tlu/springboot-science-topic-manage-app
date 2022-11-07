@@ -6,21 +6,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFieldDto;
-import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
-import sokhoahoccongnghe.phutho.gov.vn.entity.Topic;
-import sokhoahoccongnghe.phutho.gov.vn.entity.TopicField;
-import sokhoahoccongnghe.phutho.gov.vn.entity.TopicStatus;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicStatusDto;
+import sokhoahoccongnghe.phutho.gov.vn.entity.*;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NullPropertyException;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.OrganMapper;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicFieldMapper;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicMapper;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicStatusMapper;
-import sokhoahoccongnghe.phutho.gov.vn.repository.OrganRepository;
-import sokhoahoccongnghe.phutho.gov.vn.repository.TopicFieldRepository;
-import sokhoahoccongnghe.phutho.gov.vn.repository.TopicRepository;
-import sokhoahoccongnghe.phutho.gov.vn.repository.TopicStatusRepository;
+import sokhoahoccongnghe.phutho.gov.vn.repository.*;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicService;
+import sokhoahoccongnghe.phutho.gov.vn.util.GetEntityById;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +34,9 @@ public class TopicServiceImpl implements TopicService {
 
     @Autowired
     private TopicStatusRepository statusRepository;
+
+    @Autowired
+    private TopicResultRepository resultRepository;
 
     @Autowired
     private TopicMapper topicMapper;
@@ -68,7 +67,8 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     @Transactional(rollbackFor = {RuntimeException.class})
-    public TopicDto createTopic(Integer organId, Integer fieldId,Integer statusId, TopicDto topicRequest) {
+    public TopicDto createTopic(Integer organId, Integer fieldId, Integer statusId,Integer resultId,
+                                TopicDto topicRequest) {
         Topic topicRequestEntity = topicMapper.dto2Entity(topicRequest);
         return organRepository.findById(organId)
                 .map(organ -> {
@@ -78,6 +78,10 @@ public class TopicServiceImpl implements TopicService {
                     TopicStatus statusEntity =
                             statusRepository.findById(statusId).orElseThrow(() -> new NotFoundException(statusId, "topic status"));
                     topicRequestEntity.setTopicStatus(statusEntity);
+
+                    TopicResult resultEntity = GetEntityById.getEntity(resultRepository,resultId);
+                    topicRequestEntity.setTopicResult(resultEntity);
+
                     Topic topicCreated = topicRepository.save(topicRequestEntity);
                     return topicMapper.entity2Dto(topicCreated);
                 })
@@ -87,20 +91,30 @@ public class TopicServiceImpl implements TopicService {
     @Override
     @Transactional(rollbackFor = {RuntimeException.class})
     public void udpateTopic(Integer id, TopicDto topicRequest) {
-        Topic topicFinded = this.getTopicEntity(id);
+        Topic topicFinded = GetEntityById.getEntity(topicRepository, id);
+
         topicFinded.setManager(topicRequest.getManager());
         topicFinded.setName(topicRequest.getName());
         topicFinded.setStartDate(topicRequest.getStartDate());
         topicFinded.setEndDate(topicRequest.getEndDate());
         topicFinded.setExpense(topicRequest.getExpense());
-        TopicFieldDto fieldOfTopicRequest = topicRequest.getTopicField();
-        if (fieldOfTopicRequest != null && fieldOfTopicRequest.getId() != null) {
-            Integer fieldIdOfTopicRequest = fieldOfTopicRequest.getId();
-            TopicField fieldEntity = fieldRepository
-                    .findById(fieldIdOfTopicRequest)
-                    .orElseThrow(() -> new NotFoundException(fieldIdOfTopicRequest, "topic field"));
+
+        TopicFieldDto fieldOfTopicReq = topicRequest.getTopicField();
+        TopicStatusDto statusOfTopicReq = topicRequest.getTopicStatus();
+
+        if (fieldOfTopicReq != null && fieldOfTopicReq.getId() != null) {
+            Integer fieldIdOfTopicRequest = fieldOfTopicReq.getId();
+            TopicField fieldEntity = GetEntityById.getEntity(fieldRepository, fieldIdOfTopicRequest);
             topicFinded.setTopicField(fieldEntity);
         } else throw new NullPropertyException();
+
+        if (statusOfTopicReq != null && statusOfTopicReq.getId() != null) {
+            Integer statusIdOfTopicReq = statusOfTopicReq.getId();
+            TopicStatus statusEntity = GetEntityById.getEntity(statusRepository, statusIdOfTopicReq);
+            topicFinded.setTopicStatus(statusEntity);
+        } else throw new NullPropertyException();
+
+
         topicRepository.save(topicFinded);
     }
 
@@ -121,17 +135,18 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public List<TopicDto> getTopicsByStatus(Integer statusId) {
         TopicStatus statusEntity = statusRepository.findById(statusId)
-                .orElseThrow(()->new NotFoundException(statusId, "topic status"));
+                .orElseThrow(() -> new NotFoundException(statusId, "topic status"));
         List<Topic> topicListEntity = topicRepository.findByTopicStatus(statusEntity);
         return topicMapper.listEntity2Dto(topicListEntity);
     }
 
     @Override
     public void deleteTopic(Integer id) {
-        Topic topicFinded = this.getTopicEntity(id);
+        Topic topicFinded = GetEntityById.getEntity(topicRepository, id);
         topicRepository.delete(topicFinded);
     }
 
+    //deprecated
     public Topic getTopicEntity(Integer id) {
         //return entity if exist,else throw exception
         return topicRepository.findById(id)

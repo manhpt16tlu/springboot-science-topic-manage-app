@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = {"/api"})
+@CrossOrigin(origins = "http://localhost:3000")
 public class TopicController {
     @Autowired
     private TopicService topicService;
@@ -31,12 +32,12 @@ public class TopicController {
                 topicDto, true);
     }
 
-    @PostMapping(value = "/organ/{organId}/field/{fieldId}/status/{statusId}/topic")
+    @PostMapping(value = "/organ/{organId}/field/{fieldId}/status/{statusId}/result/{resultId}/topic")
     public ResponseEntity<Object> createTopic(@PathVariable Integer organId, @PathVariable Integer fieldId,
-                                              @PathVariable Integer statusId,
+                                              @PathVariable Integer statusId,@PathVariable Integer resultId,
                                               @RequestBody TopicDto topicRequest) {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.createTopic(organId, fieldId, statusId,topicRequest), true);
+                topicService.createTopic(organId, fieldId, statusId,resultId,topicRequest), true);
 
     }
 

@@ -1,6 +1,9 @@
 package sokhoahoccongnghe.phutho.gov.vn.service.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sokhoahoccongnghe.phutho.gov.vn.dto.OrganDto;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
@@ -8,8 +11,6 @@ import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.OrganMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.OrganRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.OrganService;
-
-import java.util.List;
 
 @Service
 public class OrganServiceImpl implements OrganService {
@@ -26,9 +27,13 @@ public class OrganServiceImpl implements OrganService {
     }
 
     @Override
-    public List<OrganDto> getOrgans() {
-         List<Organ> organListEntity = organRepository.findAll();
-         return organMapper.listEntity2Dto(organListEntity);
+    public Page<OrganDto> getOrgans(int page,int size,String search) {
+         Pageable paging = PageRequest.of(page,size);
+         Page<Organ> organPageEntity;
+         if(search.equals("")) organPageEntity=organRepository.findAll(paging);
+         else
+             organPageEntity = organRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(search,search,paging);
+         return organPageEntity.map(organMapper::entity2Dto);
     }
     @Override
     public OrganDto getOrgan(Integer id) {

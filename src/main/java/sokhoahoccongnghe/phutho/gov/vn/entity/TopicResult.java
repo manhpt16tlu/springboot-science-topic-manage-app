@@ -1,27 +1,27 @@
 package sokhoahoccongnghe.phutho.gov.vn.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
-@Builder
 @ToString
+@Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "ket_qua")
-public class Result {
+public class TopicResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ma")
     private Integer id;
 
-    @Column(name = "tieude", nullable = false)
+    @Column(name = "tieude")
     private String title;
 
     @Column(name = "mota")
-    private String descript;
+    private String description;
 }
