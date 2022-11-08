@@ -58,6 +58,11 @@ public class TopicController {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(),HttpStatus.OK,
                 topicService.getTopicsByStatus(statusId),true);
     }
+    @GetMapping(value = "/result/{resultId}/topic")
+    public ResponseEntity<Object> getTopicsByResultId(@PathVariable Integer resultId){
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(),HttpStatus.OK,
+                topicService.getTopicsByResult(resultId),true);
+    }
 
     @PutMapping(value = "/topic/{id}")
     public ResponseEntity<Object> updateTopic(@PathVariable Integer id, @RequestBody TopicDto topicRequest) {

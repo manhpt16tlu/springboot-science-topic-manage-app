@@ -13,4 +13,5 @@ public interface TopicService {
    List<TopicDto> getTopicsByField(Integer fieldId);
    List<TopicDto> getTopics();
    List<TopicDto> getTopicsByStatus(Integer statusId);
+   List<TopicDto> getTopicsByResult(Integer resultId);
 }

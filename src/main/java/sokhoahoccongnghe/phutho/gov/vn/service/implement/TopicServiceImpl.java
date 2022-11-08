@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFieldDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicResultDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicStatusDto;
 import sokhoahoccongnghe.phutho.gov.vn.entity.*;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
@@ -89,6 +90,13 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    public List<TopicDto> getTopicsByResult(Integer resultId) {
+        TopicResult resultEntity = GetEntityById.getEntity(resultRepository,resultId);
+        List<Topic> topicListEntity = topicRepository.findByTopicResult(resultEntity);
+        return topicMapper.listEntity2Dto(topicListEntity);
+    }
+
+    @Override
     @Transactional(rollbackFor = {RuntimeException.class})
     public void udpateTopic(Integer id, TopicDto topicRequest) {
         Topic topicFinded = GetEntityById.getEntity(topicRepository, id);
@@ -101,6 +109,7 @@ public class TopicServiceImpl implements TopicService {
 
         TopicFieldDto fieldOfTopicReq = topicRequest.getTopicField();
         TopicStatusDto statusOfTopicReq = topicRequest.getTopicStatus();
+        TopicResultDto resultOfTopicReq = topicRequest.getTopicResult();
 
         if (fieldOfTopicReq != null && fieldOfTopicReq.getId() != null) {
             Integer fieldIdOfTopicRequest = fieldOfTopicReq.getId();
@@ -114,6 +123,12 @@ public class TopicServiceImpl implements TopicService {
             topicFinded.setTopicStatus(statusEntity);
         } else throw new NullPropertyException();
 
+        if(resultOfTopicReq != null && resultOfTopicReq.getId() != null){
+            Integer resultIdOfTopicReq = resultOfTopicReq.getId();
+            TopicResult resultEntity = GetEntityById.getEntity(resultRepository,resultIdOfTopicReq);
+            topicFinded.setTopicResult(resultEntity);
+        }
+        else throw new NullPropertyException();
 
         topicRepository.save(topicFinded);
     }
