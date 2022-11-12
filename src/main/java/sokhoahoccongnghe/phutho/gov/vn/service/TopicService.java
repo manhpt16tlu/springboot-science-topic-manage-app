@@ -14,4 +14,6 @@ public interface TopicService {
    List<TopicDto> getTopics();
    List<TopicDto> getTopicsByStatus(Integer statusId);
    List<TopicDto> getTopicsByResult(Integer resultId);
+   long countTopicByStatus(Integer organId,Integer statusId);
+   long countTopicByResult(Integer organId,Integer resultId);
 }

@@ -19,7 +19,7 @@ public class TopicController {
     @Autowired
     private TopicService topicService;
 
-    @GetMapping("/topic")
+    @GetMapping(value = "/topic")
     public ResponseEntity<Object> getTopics() {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicService.getTopics(), true);

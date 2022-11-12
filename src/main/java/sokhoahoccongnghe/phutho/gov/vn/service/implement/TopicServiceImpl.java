@@ -97,6 +97,20 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    public long countTopicByStatus(Integer organId, Integer statusId) {
+        Organ organEntity = GetEntityById.getEntity(organRepository,organId);
+        TopicStatus statusEntity =  GetEntityById.getEntity(statusRepository,statusId);
+        return topicRepository.countByTopicStatusAndOrgan(statusEntity,organEntity);
+    }
+
+    @Override
+    public long countTopicByResult(Integer organId, Integer resultId) {
+        Organ organEntity = GetEntityById.getEntity(organRepository,organId);
+        TopicResult resultEntity =  GetEntityById.getEntity(resultRepository,resultId);
+        return topicRepository.countByTopicResultAndOrgan(resultEntity,organEntity);
+    }
+
+    @Override
     @Transactional(rollbackFor = {RuntimeException.class})
     public void udpateTopic(Integer id, TopicDto topicRequest) {
         Topic topicFinded = GetEntityById.getEntity(topicRepository, id);
