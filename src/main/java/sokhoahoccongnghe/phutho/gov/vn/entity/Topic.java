@@ -21,6 +21,9 @@ public class Topic {
     @Column(name = "ma")
     private Integer id;
 
+    @Column(name="uid",nullable = false)
+    private String uid;
+
     @Column(name = "ten", nullable = false)
     private String name;
 

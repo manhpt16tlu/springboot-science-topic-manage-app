@@ -12,7 +12,8 @@ public interface TopicRepository extends JpaRepository<Topic,Integer> {
     List<Topic> findByTopicField(TopicField f);
     List<Topic> findByTopicStatus(TopicStatus s);
     List<Topic> findByTopicResult(TopicResult r);
+    Topic findFistByUid(String uid);
     long countByTopicStatusAndOrgan(TopicStatus s,Organ o);
     long countByTopicResultAndOrgan(TopicResult r,Organ o);
-
+    long countByName(String name);
 }

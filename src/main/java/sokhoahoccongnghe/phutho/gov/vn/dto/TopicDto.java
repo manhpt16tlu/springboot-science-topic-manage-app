@@ -12,6 +12,7 @@ import java.util.Date;
 @ToString
 public class TopicDto {
     private Integer id;
+    private String uid;
     private String name;
     private String manager;
     @JsonFormat(pattern = "yyyy-MM-dd")

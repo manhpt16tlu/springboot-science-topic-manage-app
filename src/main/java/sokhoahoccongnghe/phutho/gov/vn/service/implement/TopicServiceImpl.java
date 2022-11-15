@@ -62,7 +62,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public TopicDto getTopic(Integer id) {
-        Topic topicEntity = this.getTopicEntity(id);
+        Topic topicEntity = GetEntityById.getEntity(topicRepository,id);
         return topicMapper.entity2Dto(topicEntity);
     }
 
@@ -97,6 +97,12 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    public TopicDto getTopicByUID(String uid) {
+        Topic topicEntity = topicRepository.findFistByUid(uid);
+        return topicMapper.entity2Dto(topicEntity);
+    }
+
+    @Override
     public long countTopicByStatus(Integer organId, Integer statusId) {
         Organ organEntity = GetEntityById.getEntity(organRepository,organId);
         TopicStatus statusEntity =  GetEntityById.getEntity(statusRepository,statusId);
@@ -108,6 +114,11 @@ public class TopicServiceImpl implements TopicService {
         Organ organEntity = GetEntityById.getEntity(organRepository,organId);
         TopicResult resultEntity =  GetEntityById.getEntity(resultRepository,resultId);
         return topicRepository.countByTopicResultAndOrgan(resultEntity,organEntity);
+    }
+
+    @Override
+    public long countTopicByName(String name) {
+        return topicRepository.countByName(name);
     }
 
     @Override

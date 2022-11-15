@@ -33,6 +33,11 @@ public class OrganController {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 organService.getOrgans(page,size,search), true);
     }
+    @GetMapping(value="/nopaging")
+    public ResponseEntity<Object> getOrgansNoPaging() {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                organService.getOrgansNoPaging(), true);
+    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<OrganDto> getOrgan(@PathVariable(value = "id") Integer id) {

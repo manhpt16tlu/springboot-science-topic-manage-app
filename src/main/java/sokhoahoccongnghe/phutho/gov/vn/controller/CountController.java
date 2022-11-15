@@ -29,4 +29,10 @@ public class CountController {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicService.countTopicByResult(organId,resultId), true);
     }
+    @GetMapping(value = "/topic/by/name")
+    public ResponseEntity<Object> countTopicByName(@RequestParam String name){
+//        System.out.println(name);
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.countTopicByName(name), true);
+    }
 }

@@ -12,6 +12,8 @@ import sokhoahoccongnghe.phutho.gov.vn.mapper.OrganMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.OrganRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.OrganService;
 
+import java.util.List;
+
 @Service
 public class OrganServiceImpl implements OrganService {
     @Autowired
@@ -35,6 +37,13 @@ public class OrganServiceImpl implements OrganService {
              organPageEntity = organRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(search,search,paging);
          return organPageEntity.map(organMapper::entity2Dto);
     }
+
+    @Override
+    public List<OrganDto> getOrgansNoPaging() {
+        List<Organ> organListEntity = organRepository.findAll();
+        return organMapper.listEntity2Dto(organListEntity);
+    }
+
     @Override
     public OrganDto getOrgan(Integer id) {
         Organ organFinded = getOrganEntity(id);
