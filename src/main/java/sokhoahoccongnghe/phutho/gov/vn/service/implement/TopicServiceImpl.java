@@ -2,6 +2,9 @@ package sokhoahoccongnghe.phutho.gov.vn.service.implement;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
@@ -98,7 +101,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public TopicDto getTopicByUID(String uid) {
-        Topic topicEntity = topicRepository.findFistByUid(uid);
+        Topic topicEntity = topicRepository.findFirstByUid(uid);
         return topicMapper.entity2Dto(topicEntity);
     }
 
@@ -167,8 +170,29 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<TopicDto> getTopics() {
+    public List<TopicDto> getTopicsNoPaging() {
         List<Topic> topicListEntity = topicRepository.findAll();
+        return topicMapper.listEntity2Dto(topicListEntity);
+    }
+
+    @Override
+    public Page<TopicDto> getTopics(int page,int size) {
+        Pageable paging = PageRequest.of(page,size);
+        Page<Topic> topicPageEntity = topicRepository.findAll(paging);
+        return topicPageEntity.map(topicMapper::entity2Dto);
+    }
+
+    @Override
+    public List<TopicDto> getApprovedTopics() {
+        TopicStatus statusEntity = statusRepository.findFirstByTitle("Chưa duyệt");
+        List<Topic> topicListEntity = topicRepository.findByTopicStatusNot(statusEntity);
+        return topicMapper.listEntity2Dto(topicListEntity);
+    }
+
+    @Override
+    public List<TopicDto> getNonApprovedTopics() {
+        TopicStatus statusEntity = statusRepository.findFirstByTitle("Chưa duyệt");
+        List<Topic> topicListEntity = topicRepository.findByTopicStatus(statusEntity);
         return topicMapper.listEntity2Dto(topicListEntity);
     }
 

@@ -1,5 +1,6 @@
 package sokhoahoccongnghe.phutho.gov.vn.service;
 
+import org.springframework.data.domain.Page;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
 
 import java.util.List;
@@ -11,7 +12,10 @@ public interface TopicService {
    void udpateTopic(Integer id,TopicDto topicRequest);
    void deleteTopic(Integer id);
    List<TopicDto> getTopicsByField(Integer fieldId);
-   List<TopicDto> getTopics();
+   List<TopicDto> getTopicsNoPaging();
+   Page<TopicDto> getTopics(int page,int size);
+   List<TopicDto> getApprovedTopics();
+   List<TopicDto> getNonApprovedTopics();
    List<TopicDto> getTopicsByStatus(Integer statusId);
    List<TopicDto> getTopicsByResult(Integer resultId);
    TopicDto getTopicByUID(String uid);

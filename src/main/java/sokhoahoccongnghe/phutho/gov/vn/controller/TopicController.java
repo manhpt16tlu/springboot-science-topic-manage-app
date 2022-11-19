@@ -19,10 +19,27 @@ public class TopicController {
     @Autowired
     private TopicService topicService;
 
-    @GetMapping(value = "/topic")
-    public ResponseEntity<Object> getTopics() {
+    @GetMapping(value = "/topic/nopaging")
+    public ResponseEntity<Object> getTopicsNoPaging() {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.getTopics(), true);
+                topicService.getTopicsNoPaging(), true);
+    }
+    @GetMapping(value = "/topic")
+    public ResponseEntity<Object> getTopics(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "7") int size) {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getTopics(page,size), true);
+    }
+
+    @GetMapping(value = "/topic/approved")  //get all approved topic
+    public ResponseEntity<Object> getApprovedTopic() {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getApprovedTopics(), true);
+    }
+    @GetMapping(value = "/topic/not_approved")  //get all non approved topic
+    public ResponseEntity<Object> getNonApprovedTopic() {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getNonApprovedTopics(), true);
     }
 
     @GetMapping(value = "/topic/{id}")
@@ -63,7 +80,7 @@ public class TopicController {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(),HttpStatus.OK,
                 topicService.getTopicsByResult(resultId),true);
     }
-    @GetMapping(value = "/uid/{uid}/topic/")
+    @GetMapping(value = "/uid/{uid}/topic")
     public ResponseEntity<Object> getTopicByUID(@PathVariable String uid) {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(),HttpStatus.OK,
                 topicService.getTopicByUID(uid),true);

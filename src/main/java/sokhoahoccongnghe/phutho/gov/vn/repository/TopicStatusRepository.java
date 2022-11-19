@@ -6,4 +6,5 @@ import sokhoahoccongnghe.phutho.gov.vn.entity.TopicStatus;
 
 @Repository
 public interface TopicStatusRepository extends JpaRepository<TopicStatus,Integer> {
+    TopicStatus findFirstByTitle(String title);
 }
