@@ -1,5 +1,7 @@
 package sokhoahoccongnghe.phutho.gov.vn.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import sokhoahoccongnghe.phutho.gov.vn.entity.*;
@@ -12,7 +14,7 @@ public interface TopicRepository extends JpaRepository<Topic,Integer> {
     List<Topic> findByTopicField(TopicField f);
     List<Topic> findByTopicStatus(TopicStatus s);
     List<Topic> findByTopicResult(TopicResult r);
-    List<Topic> findByTopicStatusNot(TopicStatus s);
+    Page<Topic> findByTopicStatusNot(TopicStatus s, Pageable p);
     Topic findFirstByUid(String uid);
     long countByTopicStatusAndOrgan(TopicStatus s,Organ o);
     long countByTopicResultAndOrgan(TopicResult r,Organ o);

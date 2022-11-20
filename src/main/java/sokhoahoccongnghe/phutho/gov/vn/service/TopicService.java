@@ -14,7 +14,7 @@ public interface TopicService {
    List<TopicDto> getTopicsByField(Integer fieldId);
    List<TopicDto> getTopicsNoPaging();
    Page<TopicDto> getTopics(int page,int size);
-   List<TopicDto> getApprovedTopics();
+   Page<TopicDto> getApprovedTopics(int page,int size);
    List<TopicDto> getNonApprovedTopics();
    List<TopicDto> getTopicsByStatus(Integer statusId);
    List<TopicDto> getTopicsByResult(Integer resultId);

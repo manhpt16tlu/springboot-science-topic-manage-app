@@ -183,10 +183,11 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<TopicDto> getApprovedTopics() {
+    public Page<TopicDto> getApprovedTopics(int page,int size) {
+        Pageable paging = PageRequest.of(page,size);
         TopicStatus statusEntity = statusRepository.findFirstByTitle("Chưa duyệt");
-        List<Topic> topicListEntity = topicRepository.findByTopicStatusNot(statusEntity);
-        return topicMapper.listEntity2Dto(topicListEntity);
+        Page<Topic> topicPageEntity = topicRepository.findByTopicStatusNot(statusEntity,paging);
+        return topicPageEntity.map(topicMapper::entity2Dto);
     }
 
     @Override

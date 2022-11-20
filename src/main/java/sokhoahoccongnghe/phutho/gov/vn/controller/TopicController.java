@@ -32,9 +32,10 @@ public class TopicController {
     }
 
     @GetMapping(value = "/topic/approved")  //get all approved topic
-    public ResponseEntity<Object> getApprovedTopic() {
+    public ResponseEntity<Object> getApprovedTopic(@RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "7") int size) {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.getApprovedTopics(), true);
+                topicService.getApprovedTopics(page,size), true);
     }
     @GetMapping(value = "/topic/not_approved")  //get all non approved topic
     public ResponseEntity<Object> getNonApprovedTopic() {
