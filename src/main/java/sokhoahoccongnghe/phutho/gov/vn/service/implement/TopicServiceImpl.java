@@ -114,9 +114,9 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public long countTopicByResult(Integer organId, Integer resultId) {
-        Organ organEntity = GetEntityById.getEntity(organRepository,organId);
-        TopicResult resultEntity =  GetEntityById.getEntity(resultRepository,resultId);
-        return topicRepository.countByTopicResultAndOrgan(resultEntity,organEntity);
+        Organ organEntity = GetEntityById.getEntity(organRepository, organId);
+        TopicResult resultEntity = GetEntityById.getEntity(resultRepository, resultId);
+        return topicRepository.countByTopicResultAndOrgan(resultEntity, organEntity);
     }
 
     @Override
@@ -187,6 +187,15 @@ public class TopicServiceImpl implements TopicService {
         Pageable paging = PageRequest.of(page,size);
         TopicStatus statusEntity = statusRepository.findFirstByTitle("Chưa duyệt");
         Page<Topic> topicPageEntity = topicRepository.findByTopicStatusNot(statusEntity,paging);
+        return topicPageEntity.map(topicMapper::entity2Dto);
+    }
+
+    @Override
+    public Page<TopicDto> getFilteredApprovedTopics(int page, int size, String name, String organ, String manager) {
+        Pageable paging = PageRequest.of(page, size);
+        TopicStatus statusEntity = statusRepository.findFirstByTitle("Chưa duyệt");
+        Page<Topic> topicPageEntity =
+                topicRepository.findByTopicStatusNotAndNameContainingAndOrgan_NameContainingAndManagerContaining(statusEntity, name, organ, manager, paging);
         return topicPageEntity.map(topicMapper::entity2Dto);
     }
 

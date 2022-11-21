@@ -28,7 +28,7 @@ public class TopicController {
     public ResponseEntity<Object> getTopics(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "7") int size) {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.getTopics(page,size), true);
+                topicService.getTopics(page, size), true);
     }
 
     @GetMapping(value = "/topic/approved")  //get all approved topic
@@ -37,6 +37,18 @@ public class TopicController {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicService.getApprovedTopics(page,size), true);
     }
+
+    @GetMapping(value = "/topic/approved/filtered")  //get all approved topic with filter
+    public ResponseEntity<Object> getFilteredApprovedTopic(@RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "7") int size,
+                                                           @RequestParam(name = "name", defaultValue = "") String searchName,
+                                                           @RequestParam(name = "organ", defaultValue = "") String organFilter,
+                                                           @RequestParam(name = "manager", defaultValue = "") String searchManganer
+    ) {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getFilteredApprovedTopics(page, size, searchName, organFilter, searchManganer), true);
+    }
+
     @GetMapping(value = "/topic/not_approved")  //get all non approved topic
     public ResponseEntity<Object> getNonApprovedTopic() {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
@@ -52,10 +64,10 @@ public class TopicController {
 
     @PostMapping(value = "/organ/{organId}/field/{fieldId}/status/{statusId}/result/{resultId}/topic")
     public ResponseEntity<Object> createTopic(@PathVariable Integer organId, @PathVariable Integer fieldId,
-                                              @PathVariable Integer statusId,@PathVariable Integer resultId,
+                                              @PathVariable Integer statusId, @PathVariable Integer resultId,
                                               @RequestBody TopicDto topicRequest) {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.createTopic(organId, fieldId, statusId,resultId,topicRequest), true);
+                topicService.createTopic(organId, fieldId, statusId, resultId, topicRequest), true);
 
     }
 
@@ -72,20 +84,23 @@ public class TopicController {
     }
 
     @GetMapping(value = "/status/{statusId}/topic")
-    public ResponseEntity<Object> getTopicsByStatusId(@PathVariable Integer statusId){
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(),HttpStatus.OK,
-                topicService.getTopicsByStatus(statusId),true);
+    public ResponseEntity<Object> getTopicsByStatusId(@PathVariable Integer statusId) {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getTopicsByStatus(statusId), true);
     }
+
     @GetMapping(value = "/result/{resultId}/topic")
-    public ResponseEntity<Object> getTopicsByResultId(@PathVariable Integer resultId){
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(),HttpStatus.OK,
-                topicService.getTopicsByResult(resultId),true);
+    public ResponseEntity<Object> getTopicsByResultId(@PathVariable Integer resultId) {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getTopicsByResult(resultId), true);
     }
+
     @GetMapping(value = "/uid/{uid}/topic")
     public ResponseEntity<Object> getTopicByUID(@PathVariable String uid) {
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(),HttpStatus.OK,
-                topicService.getTopicByUID(uid),true);
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getTopicByUID(uid), true);
     }
+
     @PutMapping(value = "/topic/{id}")
     public ResponseEntity<Object> updateTopic(@PathVariable Integer id, @RequestBody TopicDto topicRequest) {
         topicService.udpateTopic(id, topicRequest);
@@ -100,9 +115,6 @@ public class TopicController {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 null, true);
     }
-
-
-
 
 
 }
