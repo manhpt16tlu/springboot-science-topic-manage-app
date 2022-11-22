@@ -16,7 +16,7 @@ public interface TopicService {
    Page<TopicDto> getTopics(int page,int size);
    Page<TopicDto> getApprovedTopics(int page,int size);
    Page<TopicDto> getFilteredApprovedTopics(int page,int size,String name,String organ,String manager);
-   List<TopicDto> getNonApprovedTopics();
+   List<TopicDto> getNonApprovedTopicsByOrgan(Integer organId);
    List<TopicDto> getTopicsByStatus(Integer statusId);
    List<TopicDto> getTopicsByResult(Integer resultId);
    TopicDto getTopicByUID(String uid);

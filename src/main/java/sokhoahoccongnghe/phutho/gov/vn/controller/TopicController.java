@@ -32,14 +32,14 @@ public class TopicController {
     }
 
     @GetMapping(value = "/topic/approved")  //get all approved topic
-    public ResponseEntity<Object> getApprovedTopic(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Object> getApprovedTopics(@RequestParam(defaultValue = "0") int page,
                                                    @RequestParam(defaultValue = "7") int size) {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicService.getApprovedTopics(page,size), true);
     }
 
     @GetMapping(value = "/topic/approved/filtered")  //get all approved topic with filter
-    public ResponseEntity<Object> getFilteredApprovedTopic(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Object> getFilteredApprovedTopics(@RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "7") int size,
                                                            @RequestParam(name = "name", defaultValue = "") String searchName,
                                                            @RequestParam(name = "organ", defaultValue = "") String organFilter,
@@ -49,10 +49,10 @@ public class TopicController {
                 topicService.getFilteredApprovedTopics(page, size, searchName, organFilter, searchManganer), true);
     }
 
-    @GetMapping(value = "/topic/not_approved")  //get all non approved topic
-    public ResponseEntity<Object> getNonApprovedTopic() {
+    @GetMapping(value = "/organ/{organId}/topic/not_approved")  //get all non approved topic (no paging)
+    public ResponseEntity<Object> getNonApprovedTopicsByOrganId(@PathVariable Integer organId) {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.getNonApprovedTopics(), true);
+                topicService.getNonApprovedTopicsByOrgan(organId), true);
     }
 
     @GetMapping(value = "/topic/{id}")

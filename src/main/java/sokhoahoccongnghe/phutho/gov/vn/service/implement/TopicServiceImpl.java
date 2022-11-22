@@ -200,9 +200,10 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<TopicDto> getNonApprovedTopics() {
-        TopicStatus statusEntity = statusRepository.findFirstByTitle("Chưa duyệt");
-        List<Topic> topicListEntity = topicRepository.findByTopicStatus(statusEntity);
+    public List<TopicDto> getNonApprovedTopicsByOrgan(Integer organId) {
+        Organ organEntity = GetEntityById.getEntity(organRepository,organId);
+        TopicStatus statusEntity = statusRepository.findFirstByTitle("Chưa duyệt"); // tạm thời fix cứng
+        List<Topic> topicListEntity = topicRepository.findByOrganAndTopicStatus(organEntity,statusEntity);
         return topicMapper.listEntity2Dto(topicListEntity);
     }
 
