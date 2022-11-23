@@ -106,9 +106,16 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public long countTopicByStatus(Integer organId, Integer statusId) {
+    public long countTopicByStatusId(Integer organId, Integer statusId) {
         Organ organEntity = GetEntityById.getEntity(organRepository,organId);
         TopicStatus statusEntity =  GetEntityById.getEntity(statusRepository,statusId);
+        return topicRepository.countByTopicStatusAndOrgan(statusEntity,organEntity);
+    }
+
+    @Override
+    public long countTopicByStatusName(Integer organId, String statusName) {
+        Organ organEntity = GetEntityById.getEntity(organRepository,organId);
+        TopicStatus statusEntity = statusRepository.findFirstByTitle(statusName); //name of status is 'title' in db
         return topicRepository.countByTopicStatusAndOrgan(statusEntity,organEntity);
     }
 

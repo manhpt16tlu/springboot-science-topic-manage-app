@@ -18,10 +18,15 @@ public class CountController {
     @Autowired
     private TopicService topicService;
 
-    @GetMapping(value = "/topic/by/status")
-    public ResponseEntity<Object> countTopicByStatus(@RequestParam int organId, @RequestParam int statusId){
+    @GetMapping(value = "/topic/by/status_id")
+    public ResponseEntity<Object> countTopicByStatusId(@RequestParam int organId, @RequestParam int statusId){
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.countTopicByStatus(organId,statusId), true);
+                topicService.countTopicByStatusId(organId,statusId), true);
+    }
+    @GetMapping(value = "/topic/by/status_name")
+    public ResponseEntity<Object> countTopicByStatusName(@RequestParam int organId, @RequestParam String statusName){
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.countTopicByStatusName(organId,statusName), true);
     }
 
     @GetMapping(value = "/topic/by/result")
