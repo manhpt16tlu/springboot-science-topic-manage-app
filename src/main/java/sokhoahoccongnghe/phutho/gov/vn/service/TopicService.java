@@ -11,6 +11,7 @@ public interface TopicService {
    TopicDto createTopic(Integer organId,Integer fieldId,Integer statusId,Integer resultId,TopicDto topicRequest);
    void udpateTopic(Integer id,TopicDto topicRequest);
    void deleteTopic(Integer id);
+   void approveTopic(Integer topicId,TopicDto topicRequest);
    List<TopicDto> getTopicsByField(Integer fieldId);
    List<TopicDto> getTopicsNoPaging();
    Page<TopicDto> getTopics(int page,int size);

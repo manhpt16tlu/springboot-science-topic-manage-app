@@ -228,6 +228,17 @@ public class TopicServiceImpl implements TopicService {
         topicRepository.delete(topicFinded);
     }
 
+    @Override
+    public void approveTopic(Integer topicId, TopicDto topicRequest) {
+        if(topicRequest.getTopicStatus() != null && topicRequest.getTopicStatus().getTitle() != null) {
+            TopicStatus statusEntity = statusRepository.findFirstByTitle(topicRequest.getTopicStatus().getTitle());
+            Topic topicEntity = GetEntityById.getEntity(topicRepository,topicId);
+            topicEntity.setTopicStatus(statusEntity);
+            topicRepository.save(topicEntity);
+        }
+         else throw new NullPropertyException();
+    }
+
     //deprecated
     public Topic getTopicEntity(Integer id) {
         //return entity if exist,else throw exception

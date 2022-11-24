@@ -108,6 +108,14 @@ public class TopicController {
                 null, true);
     }
 
+    //special update method
+    @PatchMapping(value = "/approve_topic/{id}")
+    public ResponseEntity<Object> approveTopic(@PathVariable Integer id, @RequestBody TopicDto topicRequest) {
+        topicService.approveTopic(id, topicRequest);
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                null, true);
+    }
+
 
     @DeleteMapping(value = "/topic/{id}")
     public ResponseEntity<Object> deleteTopic(@PathVariable Integer id) {
