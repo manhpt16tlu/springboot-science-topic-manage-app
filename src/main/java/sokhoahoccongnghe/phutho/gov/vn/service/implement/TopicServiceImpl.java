@@ -232,9 +232,13 @@ public class TopicServiceImpl implements TopicService {
     public void approveTopic(Integer topicId, TopicDto topicRequest) {
         if(topicRequest.getTopicStatus() != null && topicRequest.getTopicStatus().getTitle() != null) {
             TopicStatus statusEntity = statusRepository.findFirstByTitle(topicRequest.getTopicStatus().getTitle());
-            Topic topicEntity = GetEntityById.getEntity(topicRepository,topicId);
-            topicEntity.setTopicStatus(statusEntity);
-            topicRepository.save(topicEntity);
+            System.out.println(statusEntity);
+            if(statusEntity != null) {
+                Topic topicEntity = GetEntityById.getEntity(topicRepository, topicId);
+                topicEntity.setTopicStatus(statusEntity);
+                topicRepository.save(topicEntity);
+            }
+            else throw new NotFoundException("status");
         }
          else throw new NullPropertyException();
     }
