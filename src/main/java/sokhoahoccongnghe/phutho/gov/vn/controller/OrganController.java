@@ -39,6 +39,12 @@ public class OrganController {
                 organService.getOrgansNoPaging(), true);
     }
 
+    @GetMapping(value="/need_approve")
+    public ResponseEntity<Object> getOrgansNeedApprove() {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                organService.getOrgansNeedApprove(), true);
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<OrganDto> getOrgan(@PathVariable(value = "id") Integer id) {
         OrganDto o = organService.getOrgan(id);

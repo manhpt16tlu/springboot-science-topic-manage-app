@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sokhoahoccongnghe.phutho.gov.vn.dto.OrganDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.OrganView;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.OrganMapper;
@@ -42,6 +43,11 @@ public class OrganServiceImpl implements OrganService {
     public List<OrganDto> getOrgansNoPaging() {
         List<Organ> organListEntity = organRepository.findAll();
         return organMapper.listEntity2Dto(organListEntity);
+    }
+
+    @Override
+    public List<OrganView> getOrgansNeedApprove() {
+        return organRepository.findByStatusWhichNeedApprove();
     }
 
     @Override
