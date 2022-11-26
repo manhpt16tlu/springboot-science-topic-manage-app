@@ -30,13 +30,17 @@ public class Topic {
     @Column(name = "chunhiem", nullable = false)
     private String manager;
 
-    @Column(name = "ngaybatdau")
-    @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
+    @Column(name = "ngaybatdau",nullable = false)
+//    @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
     private Date startDate;
 
-    @Column(name = "ngayketthuc")
-    @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
+    @Column(name = "ngayketthuc",nullable = false)
+//    @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
     private Date endDate;
+
+    @Column(name = "ngaytao",nullable = false)
+    private Date createDate;
+
 
     @Column(name = "kinhphi")
     private Long expense;

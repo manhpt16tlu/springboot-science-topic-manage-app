@@ -15,7 +15,7 @@ public interface TopicRepository extends JpaRepository<Topic,Integer> {
     List<Topic> findByTopicStatus(TopicStatus s);
     List<Topic> findByOrganAndTopicStatus(Organ o,TopicStatus s);
     List<Topic> findByTopicResult(TopicResult r);
-    Page<Topic> findByTopicStatusNot(TopicStatus s, Pageable p);
+    Page<Topic> findByTopicStatusNot(TopicStatus ts, Pageable p);
     Page<Topic> findByTopicStatusNotAndNameContainingAndOrgan_NameContainingAndManagerContaining(TopicStatus s,
                                                                                                  String name,
                                                                                                  String organ, String manager,

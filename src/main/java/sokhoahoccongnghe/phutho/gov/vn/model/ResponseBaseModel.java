@@ -12,7 +12,7 @@ public class ResponseBaseModel {
     public static <T> ResponseEntity<Object> responseBuidler(String responseMessage,
                                                              HttpStatus responseStatus,
                                                              T responseObject, boolean isSuccess) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM yyyy hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM yyyy HH:mm:ss");
         Map<String, Object> response = new HashMap<>();
         response.put("message", responseMessage);
         response.put("httpStatus", responseStatus);

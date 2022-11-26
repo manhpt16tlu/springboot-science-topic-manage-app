@@ -19,6 +19,8 @@ public class TopicDto {
     private Date startDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
+    private Date createDate;
     private Long expense;
     private OrganDto organ;
     private TopicFieldDto topicField;

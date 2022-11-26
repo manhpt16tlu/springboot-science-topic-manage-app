@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
@@ -14,16 +15,13 @@ import sokhoahoccongnghe.phutho.gov.vn.dto.TopicStatusDto;
 import sokhoahoccongnghe.phutho.gov.vn.entity.*;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NullPropertyException;
-import sokhoahoccongnghe.phutho.gov.vn.mapper.OrganMapper;
-import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicFieldMapper;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicMapper;
-import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicStatusMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.*;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicService;
 import sokhoahoccongnghe.phutho.gov.vn.util.GetEntityById;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class TopicServiceImpl implements TopicService {
@@ -76,15 +74,19 @@ public class TopicServiceImpl implements TopicService {
         Topic topicRequestEntity = topicMapper.dto2Entity(topicRequest);
         return organRepository.findById(organId)
                 .map(organ -> {
+
                     topicRequestEntity.setOrgan(organ);
                     TopicField fieldEntity = fieldRepository.findById(fieldId).orElseThrow(() -> new NotFoundException(fieldId, "topic field"));
                     topicRequestEntity.setTopicField(fieldEntity);
+
                     TopicStatus statusEntity =
                             statusRepository.findById(statusId).orElseThrow(() -> new NotFoundException(statusId, "topic status"));
                     topicRequestEntity.setTopicStatus(statusEntity);
 
                     TopicResult resultEntity = GetEntityById.getEntity(resultRepository,resultId);
                     topicRequestEntity.setTopicResult(resultEntity);
+
+                    topicRequestEntity.setCreateDate(new Date());
 
                     Topic topicCreated = topicRepository.save(topicRequestEntity);
                     return topicMapper.entity2Dto(topicCreated);
@@ -198,11 +200,16 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Page<TopicDto> getFilteredApprovedTopics(int page, int size, String name, String organ, String manager) {
-        Pageable paging = PageRequest.of(page, size);
+    public Page<TopicDto> getFilteredApprovedTopics(int page, int size, String searchName, String organFilter, String searchManganer) {
+        Sort sort = Sort.by(Sort.Direction.DESC,"createDate");
+        Pageable paging = PageRequest.of(page, size,sort);  //nếu cần cả paging thì pass sort vào pageable
         TopicStatus statusEntity = statusRepository.findFirstByTitle("Chưa duyệt");
-        Page<Topic> topicPageEntity =
-                topicRepository.findByTopicStatusNotAndNameContainingAndOrgan_NameContainingAndManagerContaining(statusEntity, name, organ, manager, paging);
+        Page<Topic> topicPageEntity;
+        if(searchName.equals("") && organFilter.equals("") && searchManganer.equals("")){
+            topicPageEntity = topicRepository.findByTopicStatusNot(statusEntity,paging);
+        }
+        else
+            topicPageEntity = topicRepository.findByTopicStatusNotAndNameContainingAndOrgan_NameContainingAndManagerContaining(statusEntity, searchName, organFilter, searchManganer, paging);
         return topicPageEntity.map(topicMapper::entity2Dto);
     }
 
