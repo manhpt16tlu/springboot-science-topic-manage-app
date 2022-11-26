@@ -200,17 +200,24 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Page<TopicDto> getFilteredApprovedTopics(int page, int size, String searchName, String organFilter, String searchManganer) {
-        Sort sort = Sort.by(Sort.Direction.DESC,"createDate");
+    public Page<TopicDto> getFilteredApprovedTopics(int page, int size, String searchName, List<String> organFilter,
+                                                    String searchManganer,String statusFilter) {
+        Sort sort = Sort.by(Sort.Direction.DESC,"createDate");//tạo sau thì hiển thị trước
         Pageable paging = PageRequest.of(page, size,sort);  //nếu cần cả paging thì pass sort vào pageable
+
         TopicStatus statusEntity = statusRepository.findFirstByTitle("Chưa duyệt");
         Page<Topic> topicPageEntity;
-        if(searchName.equals("") && organFilter.equals("") && searchManganer.equals("")){
-            topicPageEntity = topicRepository.findByTopicStatusNot(statusEntity,paging);
+        if(searchName.equals("") && organFilter.size() == 0 && searchManganer.equals("") && statusFilter.equals("")) {
+            topicPageEntity = topicRepository.findByTopicStatusNot(statusEntity, paging);
         }
-        else
-            topicPageEntity = topicRepository.findByTopicStatusNotAndNameContainingAndOrgan_NameContainingAndManagerContaining(statusEntity, searchName, organFilter, searchManganer, paging);
-        return topicPageEntity.map(topicMapper::entity2Dto);
+        else {
+            if(organFilter.size() == 0)
+                topicPageEntity =
+                        topicRepository.findByTopicStatusNotAndTopicStatus_TitleContainingAndNameContainingAndOrgan_NameContainingAndManagerContaining(statusEntity,statusFilter, searchName, "", searchManganer, paging);
+           else topicPageEntity =
+                   topicRepository.findByTopicStatusNotAndTopicStatus_TitleContainingAndNameContainingAndOrgan_NameInAndManagerContaining(statusEntity,statusFilter, searchName, organFilter, searchManganer, paging);
+        }
+            return topicPageEntity.map(topicMapper::entity2Dto);
     }
 
     @Override

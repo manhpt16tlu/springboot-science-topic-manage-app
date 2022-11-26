@@ -42,11 +42,12 @@ public class TopicController {
     public ResponseEntity<Object> getFilteredApprovedTopics(@RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "7") int size,
                                                            @RequestParam(name = "name", defaultValue = "") String searchName,
-                                                           @RequestParam(name = "organ", defaultValue = "") String organFilter,
-                                                           @RequestParam(name = "manager", defaultValue = "") String searchManganer
+                                                           @RequestParam(name = "organ") List<String> organFilter,
+                                                           @RequestParam(name = "manager", defaultValue = "") String searchManganer,
+                                                           @RequestParam(name = "status",defaultValue = "") String statusFilter
     ) {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.getFilteredApprovedTopics(page, size, searchName, organFilter, searchManganer), true);
+                topicService.getFilteredApprovedTopics(page, size, searchName, organFilter, searchManganer,statusFilter), true);
     }
 
     @GetMapping(value = "/organ/{organId}/topic/not_approved")  //get all non approved topic (no paging)

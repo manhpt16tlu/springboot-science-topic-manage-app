@@ -16,10 +16,17 @@ public interface TopicRepository extends JpaRepository<Topic,Integer> {
     List<Topic> findByOrganAndTopicStatus(Organ o,TopicStatus s);
     List<Topic> findByTopicResult(TopicResult r);
     Page<Topic> findByTopicStatusNot(TopicStatus ts, Pageable p);
-    Page<Topic> findByTopicStatusNotAndNameContainingAndOrgan_NameContainingAndManagerContaining(TopicStatus s,
+    Page<Topic> findByTopicStatusNotAndTopicStatus_TitleContainingAndNameContainingAndOrgan_NameInAndManagerContaining(TopicStatus s,
+                                                                                                 String sf,
                                                                                                  String name,
-                                                                                                 String organ, String manager,
+                                                                                                 List<String> organ,
+                                                                                                 String manager,
                                                                                                  Pageable p);
+    Page<Topic> findByTopicStatusNotAndTopicStatus_TitleContainingAndNameContainingAndOrgan_NameContainingAndManagerContaining(TopicStatus s, String sf,
+                                                                                         String name,
+                                                                                         String organ,
+                                                                                         String manager,
+                                                                                         Pageable p);
 
     Topic findFirstByUid(String uid);
     long countByTopicStatusAndOrgan(TopicStatus s, Organ o);
