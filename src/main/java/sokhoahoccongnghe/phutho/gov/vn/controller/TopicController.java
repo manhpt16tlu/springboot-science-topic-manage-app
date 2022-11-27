@@ -63,9 +63,11 @@ public class TopicController {
                 topicDto, true);
     }
 
-    @PostMapping(value = "/organ/{organId}/field/{fieldId}/status/{statusId}/result/{resultId}/topic")
+    @PostMapping(value = {"/organ/{organId}/field/{fieldId}/status/{statusId}/result/{resultId}/topic",
+            "/organ/{organId}/field/{fieldId}/status/{statusId}/topic"
+    })
     public ResponseEntity<Object> createTopic(@PathVariable Integer organId, @PathVariable Integer fieldId,
-                                              @PathVariable Integer statusId, @PathVariable Integer resultId,
+                                              @PathVariable Integer statusId, @PathVariable(required = false) Integer resultId,
                                               @RequestBody TopicDto topicRequest) {
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicService.createTopic(organId, fieldId, statusId, resultId, topicRequest), true);

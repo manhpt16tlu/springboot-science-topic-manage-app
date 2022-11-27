@@ -6,4 +6,5 @@ import sokhoahoccongnghe.phutho.gov.vn.entity.TopicResult;
 
 @Repository
 public interface TopicResultRepository extends JpaRepository<TopicResult,Integer> {
+    TopicResult findFirstByTitle(String title);
 }

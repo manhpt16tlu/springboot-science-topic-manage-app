@@ -83,7 +83,12 @@ public class TopicServiceImpl implements TopicService {
                             statusRepository.findById(statusId).orElseThrow(() -> new NotFoundException(statusId, "topic status"));
                     topicRequestEntity.setTopicStatus(statusEntity);
 
-                    TopicResult resultEntity = GetEntityById.getEntity(resultRepository,resultId);
+                    TopicResult resultEntity;
+                    if(resultId != null) {
+                        resultEntity  = GetEntityById.getEntity(resultRepository, resultId);
+                    } else
+                        resultEntity = resultRepository.findFirstByTitle("Không xác định");
+
                     topicRequestEntity.setTopicResult(resultEntity);
 
                     topicRequestEntity.setCreateDate(new Date());

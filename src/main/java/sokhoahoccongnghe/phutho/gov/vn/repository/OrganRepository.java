@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import sokhoahoccongnghe.phutho.gov.vn.dto.OrganView;
+import sokhoahoccongnghe.phutho.gov.vn.dto.CountOrganTopicView;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
 
 import java.util.List;
@@ -17,7 +17,8 @@ public interface OrganRepository extends JpaRepository<Organ,Integer> {
             "from co_quan_chu_tri organ\n" +
             "inner join de_tai topic\n" +
             "on topic.macoquan = organ.ma\n" +
-            "where topic.matrangthai in (select ma from trang_thai status where status.tieude = 'Chưa duyệt')\n" +
+            "where topic.matrangthai in (select status.ma from trang_thai status where status.tieude = 'Chưa duyệt')" +
+            "\n" +
             "group by organ.ma;",nativeQuery = true)
-    List<OrganView> findByStatusWhichNeedApprove();
+    List<CountOrganTopicView> findByStatusWhichNeedApprove();
 }
