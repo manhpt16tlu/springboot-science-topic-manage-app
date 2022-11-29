@@ -19,10 +19,13 @@ public class GlobalExceptionHandler {
         ex.printStackTrace();
         return ResponseBaseModel.responseBuidler(ex.getMessage(), HttpStatus.BAD_REQUEST, null, false);
     }
-    @ExceptionHandler(value = {FileUploadException.class})
-    public ResponseEntity<Object> handleFileUploadException(RuntimeException ex) {
+
+
+    @ExceptionHandler(value = {FileUploadException.class,FileDownLoadException.class})
+    public ResponseEntity<Object> handleFileException(RuntimeException ex) {
         ex.printStackTrace();
-       if(ex.getCause() != null) ex.getCause().printStackTrace();
+        if(ex.getCause() != null)
+            ex.getCause().printStackTrace();
         return ResponseBaseModel.responseBuidler(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, false);
     }
 

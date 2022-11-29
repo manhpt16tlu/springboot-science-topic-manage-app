@@ -3,6 +3,7 @@ package sokhoahoccongnghe.phutho.gov.vn.service.implement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sokhoahoccongnghe.phutho.gov.vn.dto.FileTypeDto;
+import sokhoahoccongnghe.phutho.gov.vn.entity.FileType;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.FileTypeMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.FileTypeRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.FileTypeService;
@@ -18,5 +19,11 @@ public class FileTypeServiceImpl implements FileTypeService {
     @Override
     public List<FileTypeDto> getAllTypes() {
         return fileTypeMapper.listEntity2Dto(fileTypeRepository.findAll());
+    }
+
+    @Override
+    public FileTypeDto getFileTypeByName(String fileType) {
+        FileType fileTypeEntity =  fileTypeRepository.findFirstByName(fileType);
+        return fileTypeMapper.entity2Dto(fileTypeEntity);
     }
 }

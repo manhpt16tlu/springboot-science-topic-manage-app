@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface FileTypeService {
     List<FileTypeDto> getAllTypes();
+    FileTypeDto getFileTypeByName(String fileType);
 }

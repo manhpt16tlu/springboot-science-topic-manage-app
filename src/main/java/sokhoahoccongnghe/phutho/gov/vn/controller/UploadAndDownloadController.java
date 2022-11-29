@@ -1,8 +1,8 @@
 package sokhoahoccongnghe.phutho.gov.vn.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sokhoahoccongnghe.phutho.gov.vn.dto.FileDto;
@@ -28,8 +28,18 @@ public class UploadAndDownloadController {
                 savedFile, true);
     }
 
-    @GetMapping
-    public ResponseEntity<Object> downloadFile(){
-return null;
+    @GetMapping(value = "/download/{fileCode}")
+    public ResponseEntity<Object> downloadFile(@PathVariable String fileCode){
+        Resource fileResource = updownService.getFile(fileCode);
+        HttpHeaders headers = new HttpHeaders();
+        //có hai cách tạo http headers
+//        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+//        headers.add(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=x.docx");
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        ContentDisposition contentDisposition = ContentDisposition.attachment()
+                .filename(fileResource.getFilename())
+                .build();
+        headers.setContentDisposition(contentDisposition);
+        return new ResponseEntity<>(fileResource,headers,HttpStatus.OK);
     }
 }

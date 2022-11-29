@@ -24,6 +24,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public boolean existsByFileCode(String fileCode) {
+        return fileRepository.existsById(fileCode);
+    }
+
+    @Override
     public FileDto getFile(String fileCode) {
         return null;
     }

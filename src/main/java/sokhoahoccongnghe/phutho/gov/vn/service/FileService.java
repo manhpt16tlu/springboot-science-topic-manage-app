@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface FileService {
     List<FileDto> getAllFiles();
+    boolean existsByFileCode(String fileCode);
     FileDto getFile(String fileCode);
     FileDto save(FileDto fileDto);
 }
