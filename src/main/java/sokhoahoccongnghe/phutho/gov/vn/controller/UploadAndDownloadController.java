@@ -21,10 +21,15 @@ public class UploadAndDownloadController {
     @PostMapping(value = "/upload")
     public ResponseEntity<Object> uploadFile(@RequestParam(name = "file") MultipartFile fileUpload,
                                              @RequestParam(name = "type") String fileType,
-                                             @RequestParam(name = "title") String fileTitle,
-                                             @RequestParam(name = "topicId") Integer topicId) {
+                                             @RequestParam(name = "title",required = false) String fileTitle,
+                                             @RequestParam(name = "topicId",required = false) Integer topicId) {
         FileDto savedFile = updownService.upload(fileUpload, fileType,fileTitle,topicId);
         return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 savedFile, true);
+    }
+
+    @GetMapping
+    public ResponseEntity<Object> downloadFile(){
+return null;
     }
 }

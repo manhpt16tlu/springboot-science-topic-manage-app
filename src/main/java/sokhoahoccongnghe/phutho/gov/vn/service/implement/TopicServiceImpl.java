@@ -1,6 +1,7 @@
 package sokhoahoccongnghe.phutho.gov.vn.service.implement;
 
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -72,6 +73,13 @@ public class TopicServiceImpl implements TopicService {
     public TopicDto createTopic(Integer organId, Integer fieldId, Integer statusId,Integer resultId,
                                 TopicDto topicRequest) {
         Topic topicRequestEntity = topicMapper.dto2Entity(topicRequest);
+
+        String topicUid;
+        do {
+            topicUid = RandomStringUtils.randomAlphanumeric(8);
+        } while (topicRepository.existsByUid(topicUid));
+
+        topicRequestEntity.setUid(topicUid);
         return organRepository.findById(organId)
                 .map(organ -> {
 

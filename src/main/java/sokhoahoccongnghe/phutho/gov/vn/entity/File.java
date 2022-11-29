@@ -1,9 +1,9 @@
 package sokhoahoccongnghe.phutho.gov.vn.entity;
 
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -27,13 +27,17 @@ public class File {
     @Column(name="tieude")
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "madetai", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "madetai")
     private Topic topic;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "maloai", nullable = false)
     private FileType type;
+
     @Column(name = "kichthuoc")
     private long size;
+
+    @Column(name = "ngaytao")
+    private Date createDate;
 }

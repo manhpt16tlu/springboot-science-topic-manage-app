@@ -23,6 +23,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     private FileRepository fileRepository;
 
     private final Path root = Paths.get("store/files");
+
     @Override
     public FileDto save(MultipartFile multipartFile, String fileType) throws IOException {
         String convertType;
@@ -38,21 +39,30 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
 
         FileDto fileNeedSave = new FileDto();
+
         String originFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
         String fileExtension = FilenameUtils.getExtension(originFileName);
+
+//        System.out.println(multipartFile.getContentType() + "-" + fileExtension);
+
         fileNeedSave.setOriginName(originFileName);
         fileNeedSave.setSize(multipartFile.getSize());
+
         String fileCode;
         do {
             fileCode = RandomStringUtils.randomAlphanumeric(8);
         } while (fileRepository.existsById(fileCode));
+
         fileNeedSave.setCode(fileCode);
+
         try (InputStream inputStream = multipartFile.getInputStream()) {
             String fileServerName = fileCode+"-"+convertType+"."+fileExtension;
             fileNeedSave.setServerName(fileServerName);
             Path filePath = root.resolve(fileServerName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         }
+
         return fileNeedSave;
     }
 }

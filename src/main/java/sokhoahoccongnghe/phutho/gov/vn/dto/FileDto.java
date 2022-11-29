@@ -1,8 +1,11 @@
 package sokhoahoccongnghe.phutho.gov.vn.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Date;
 
 @Getter
 @Setter
@@ -15,4 +18,6 @@ public class FileDto {
     private TopicDto topic;
     private FileTypeDto type;
     private long size;
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
+    private Date createDate;
 }

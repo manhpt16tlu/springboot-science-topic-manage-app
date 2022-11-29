@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {FileUploadException.class})
     public ResponseEntity<Object> handleFileUploadException(RuntimeException ex) {
         ex.printStackTrace();
-        ex.getCause().printStackTrace();
+       if(ex.getCause() != null) ex.getCause().printStackTrace();
         return ResponseBaseModel.responseBuidler(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, false);
     }
 

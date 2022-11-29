@@ -34,5 +34,6 @@ public interface TopicRepository extends JpaRepository<Topic,Integer> {
     long countByTopicStatusAndOrgan(TopicStatus s, Organ o);
     long countByTopicResultAndOrgan(TopicResult r, Organ o);
     long countByName(String name);
+    boolean existsByUid(String uid);
 
 }

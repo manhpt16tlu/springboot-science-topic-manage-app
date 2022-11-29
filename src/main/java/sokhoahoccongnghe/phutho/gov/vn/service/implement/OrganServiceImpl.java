@@ -6,12 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sokhoahoccongnghe.phutho.gov.vn.dto.OrganDto;
-import sokhoahoccongnghe.phutho.gov.vn.dto.CountOrganTopicView;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.OrganMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.OrganRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.OrganService;
+import sokhoahoccongnghe.phutho.gov.vn.view.CountTopicOfOrganView;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class OrganServiceImpl implements OrganService {
     }
 
     @Override
-    public List<CountOrganTopicView> getOrgansNeedApprove() {
+    public List<CountTopicOfOrganView> getOrgansNeedApprove() {
         return organRepository.findByStatusWhichNeedApprove();
     }
 
