@@ -35,7 +35,7 @@ public class UploadAndDownloadController {
         //có hai cách tạo http headers
 //        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
 //        headers.add(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=x.docx");
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM); // refactor later
         ContentDisposition contentDisposition = ContentDisposition.attachment()
                 .filename(fileResource.getFilename())
                 .build();

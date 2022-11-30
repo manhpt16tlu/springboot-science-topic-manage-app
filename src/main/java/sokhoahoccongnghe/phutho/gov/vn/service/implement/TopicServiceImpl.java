@@ -251,8 +251,9 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public void deleteTopic(Integer id) {
-        Topic topicFinded = GetEntityById.getEntity(topicRepository, id);
-        topicRepository.delete(topicFinded);
+        topicRepository.deleteById(id);
+//        Topic topicFinded = GetEntityById.getEntity(topicRepository, id);
+//        topicRepository.delete(topicFinded);
     }
 
     @Override

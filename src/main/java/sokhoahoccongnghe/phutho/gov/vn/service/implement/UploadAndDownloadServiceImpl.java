@@ -8,17 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 import sokhoahoccongnghe.phutho.gov.vn.dto.FileDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.FileTypeDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
-import sokhoahoccongnghe.phutho.gov.vn.entity.FileType;
-import sokhoahoccongnghe.phutho.gov.vn.entity.Topic;
 import sokhoahoccongnghe.phutho.gov.vn.exception.FileDownLoadException;
 import sokhoahoccongnghe.phutho.gov.vn.exception.FileUploadException;
-import sokhoahoccongnghe.phutho.gov.vn.mapper.FileTypeMapper;
-import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicMapper;
-import sokhoahoccongnghe.phutho.gov.vn.repository.FileRepository;
-import sokhoahoccongnghe.phutho.gov.vn.repository.FileTypeRepository;
-import sokhoahoccongnghe.phutho.gov.vn.repository.TopicRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.*;
-import sokhoahoccongnghe.phutho.gov.vn.util.GetEntityById;
 
 import java.io.IOException;
 import java.util.Date;
