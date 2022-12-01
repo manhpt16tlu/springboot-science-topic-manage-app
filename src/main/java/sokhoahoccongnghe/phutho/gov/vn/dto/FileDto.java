@@ -18,6 +18,6 @@ public class FileDto {
     private TopicDto topic;
     private FileTypeDto type;
     private long size;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
+//    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
     private Date createDate;
 }
