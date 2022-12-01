@@ -9,4 +9,5 @@ import java.io.IOException;
 public interface FileStorageService {
     FileDto save(MultipartFile multipartFile,String fileType) throws IOException;
     Resource getFileAsResource(String fileCode);
+    boolean checkExistInFileSystem(String fileName);
 }

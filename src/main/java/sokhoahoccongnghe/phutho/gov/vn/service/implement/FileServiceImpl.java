@@ -9,11 +9,13 @@ import sokhoahoccongnghe.phutho.gov.vn.mapper.FileMapper;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.FileRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.FileService;
+import sokhoahoccongnghe.phutho.gov.vn.service.FileStorageService;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicService;
 import sokhoahoccongnghe.phutho.gov.vn.util.GetEntityById;
 import sokhoahoccongnghe.phutho.gov.vn.view.FileOfTopicView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -24,10 +26,10 @@ public class FileServiceImpl implements FileService {
     private TopicService topicService;
 
     @Autowired
-    private FileMapper fileMapper;
+    private FileStorageService fileStorageService;
 
     @Autowired
-    private TopicMapper topicMapper;
+    private FileMapper fileMapper;
 
     @Override
     public List<FileDto> getAllFiles() {
@@ -36,7 +38,12 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public List<FileOfTopicView> getFilesOfTopic(Integer topicId) {
-        return fileRepository.findByTopic(topicId);
+        List<FileOfTopicView> files = fileRepository.findByTopic(topicId);
+        //check file tồn tại
+        List<FileOfTopicView> realFiles = files.stream().filter(file->
+                fileStorageService.checkExistInFileSystem(file.getServerName())
+        ).collect(Collectors.toList());
+        return realFiles;
     }
 
     @Override

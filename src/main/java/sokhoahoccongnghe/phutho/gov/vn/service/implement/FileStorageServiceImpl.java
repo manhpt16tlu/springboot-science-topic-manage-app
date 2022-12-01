@@ -34,10 +34,10 @@ public class FileStorageServiceImpl implements FileStorageService {
         String convertType;
         switch (fileType) {
             case "Đề cương":
-                convertType = "topic";
+                convertType = "decuong";
                 break;
             case "Biểu mẫu":
-                convertType = "form";
+                convertType = "bieumau";
                 break;
             default:
                 convertType = "unknown";
@@ -76,6 +76,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         Path[] fileNeedDownloadArr = {null}; // use array because can not modify local variable in lambda
         try {
             Files.list(rootFolder).forEach(file-> {
+//                System.out.println(file.toString());
                if(file.getFileName().toString().startsWith(fileCode)){
                    fileNeedDownloadArr[0] = file;
                }
@@ -88,5 +89,10 @@ public class FileStorageServiceImpl implements FileStorageService {
             e.printStackTrace();
             throw new FileDownLoadException("can not download file",e);
         }
+    }
+    @Override
+    public boolean checkExistInFileSystem(String fileName) {
+        Path filePath = rootFolder.resolve(fileName);
+        return Files.exists(filePath);
     }
 }
