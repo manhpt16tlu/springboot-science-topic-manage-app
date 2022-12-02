@@ -12,7 +12,8 @@ import sokhoahoccongnghe.phutho.gov.vn.service.UploadAndDownloadService;
 
 @RestController
 @RequestMapping(value = "/api")
-@CrossOrigin(origins = "http://localhost:3000")
+//allow exposed content disposition in client
+@CrossOrigin(origins = {"http://localhost:3000"},exposedHeaders = {"Content-Disposition"})
 public class UploadAndDownloadController {
 
     @Autowired

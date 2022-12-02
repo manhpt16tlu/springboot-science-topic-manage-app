@@ -4,15 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sokhoahoccongnghe.phutho.gov.vn.dto.FileDto;
 import sokhoahoccongnghe.phutho.gov.vn.entity.File;
-import sokhoahoccongnghe.phutho.gov.vn.entity.Topic;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.FileMapper;
-import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.FileRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.FileService;
 import sokhoahoccongnghe.phutho.gov.vn.service.FileStorageService;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicService;
-import sokhoahoccongnghe.phutho.gov.vn.util.GetEntityById;
 import sokhoahoccongnghe.phutho.gov.vn.view.FileOfTopicView;
+import sokhoahoccongnghe.phutho.gov.vn.view.FormFileView;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +42,11 @@ public class FileServiceImpl implements FileService {
                 fileStorageService.checkExistInFileSystem(file.getServerName())
         ).collect(Collectors.toList());
         return realFiles;
+    }
+
+    @Override
+    public List<FormFileView> getFilesByTypeName(String typeName) {
+         return  fileRepository.findByFileType(typeName);
     }
 
     @Override

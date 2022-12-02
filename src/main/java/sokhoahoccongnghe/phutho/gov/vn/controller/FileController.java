@@ -28,6 +28,13 @@ public class FileController {
                 fileService.getFilesOfTopic(topicId), true);
     }
 
+    @GetMapping(value = "/type/{typeName}")
+    public ResponseEntity<Object> getFilesByType(@PathVariable String typeName) {
+        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                fileService.getFilesByTypeName(typeName), true);
+    }
+
+
 //    @PostMapping
 //    public ResponseEntity<Object> saveFile(@RequestBody FileDto fileRequest) {
 //       FileDto savedFile =  fileService.save(fileRequest);
