@@ -5,10 +5,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import sokhoahoccongnghe.phutho.gov.vn.dto.FileDto;
-import sokhoahoccongnghe.phutho.gov.vn.dto.FileTypeDto;
-import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
-import sokhoahoccongnghe.phutho.gov.vn.exception.FileDownLoadException;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFileDto;
 import sokhoahoccongnghe.phutho.gov.vn.exception.FileUploadException;
 import sokhoahoccongnghe.phutho.gov.vn.service.*;
 
@@ -19,47 +16,44 @@ import java.util.Date;
 public class UploadAndDownloadServiceImpl implements UploadAndDownloadService {
 
     @Autowired
-    private FileService fileService;
+    private TopicFileService topicFileService;
+
     @Autowired
     private FileStorageService fileStorageService;
+
     @Autowired
     private TopicService topicService;
+
     @Autowired
-    private FileTypeService fileTypeService;
+    private TopicFileTypeService topicFileTypeService;
 
     @Override
     @Transactional(rollbackFor = {RuntimeException.class})
-    public FileDto upload(MultipartFile fileUpload,String fileType,String fileTitle,Integer topicId) {
+    public TopicFileDto uploadTopicFile(MultipartFile fileUpload, String topicFileType, Integer topicId) {
         if(fileUpload.isEmpty()) throw new FileUploadException("file upload can not be NULL");
-        FileDto fileNeedSave;
-        try {
-            fileNeedSave = fileStorageService.save(fileUpload,fileType);
-        } catch (IOException e) {
-            e.printStackTrace();
+        TopicFileDto fileNeedSave;
+        try{
+            //save to file system
+            fileNeedSave = fileStorageService.saveTopicFile(fileUpload,topicFileType);
+        }
+        catch (IOException e){
             throw new FileUploadException("can not upload file",e);
         }
-
-        fileNeedSave.setTitle(fileTitle);
-
-        if(topicId != null) {
-            TopicDto topicDto = topicService.getTopic(topicId);
-            fileNeedSave.setTopic(topicDto);
-        }
-
-        FileTypeDto fileTypeDto = fileTypeService.getFileTypeByName(fileType);
-        if(fileTypeDto == null)
-            fileTypeDto = fileTypeService.getFileTypeByName("Không xác định");
-
-        fileNeedSave.setType(fileTypeDto);
-
+        fileNeedSave.setTopic(topicService.getTopic(topicId));
         fileNeedSave.setCreateDate(new Date());
 
-        return fileService.save(fileNeedSave);
+        return  topicFileService.createTopicFile(fileNeedSave);
     }
 
     @Override
-    public Resource getFile(String fileCode) {
-       if(!fileService.existsByFileCode(fileCode)) throw new FileDownLoadException("file " + fileCode + " not exist");
-       return fileStorageService.getFileAsResource(fileCode);
+    public Resource getFile(String fileType, String fileCode) {
+     return fileStorageService.getFileAsResource(fileCode,fileType);
     }
+
+//
+//    @Override
+//    public Resource getFile(String fileCode) {
+//       if(!fileService.existsByFileCode(fileCode)) throw new FileDownLoadException("file " + fileCode + " not exist");
+//       return fileStorageService.getFileAsResource(fileCode);
+//    }
 }

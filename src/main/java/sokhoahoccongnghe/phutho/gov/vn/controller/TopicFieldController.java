@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFieldDto;
-import sokhoahoccongnghe.phutho.gov.vn.model.MessageModel;
+import sokhoahoccongnghe.phutho.gov.vn.model.MessageEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicFieldService;
 
@@ -20,14 +20,14 @@ public class TopicFieldController {
     @PostMapping
     public ResponseEntity<Object> createField(@RequestBody TopicFieldDto fieldRequest) {
         TopicFieldDto fieldCreated = topicFieldService.createField(fieldRequest);
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 fieldCreated,true);
 
     }
 
     @GetMapping
     public ResponseEntity<Object> getFields() {
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicFieldService.getFields(),true);
     }
 
@@ -35,14 +35,14 @@ public class TopicFieldController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> deleteField(@PathVariable Integer id) {
         topicFieldService.deleteField(id);
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,  null
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,  null
                 ,true);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Object> getField(@PathVariable(value = "id") Integer id) {
         TopicFieldDto fieldFinded = topicFieldService.getField(id);
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK, fieldFinded,
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK, fieldFinded,
                 true);
     }
 
@@ -50,7 +50,7 @@ public class TopicFieldController {
     public ResponseEntity<Object> updateField(@PathVariable(value = "id") Integer id,
                                               @RequestBody TopicFieldDto fieldRequest) {
         topicFieldService.updateField(id, fieldRequest);
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,  null
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,  null
                 ,true);
     }
 }

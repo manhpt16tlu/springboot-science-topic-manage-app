@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {NotFoundException.class})
     public ResponseEntity<Object> handleNotFound(RuntimeException ex) {
         ex.printStackTrace();
-        return ResponseBaseModel.responseBuidler(ex.getMessage(), HttpStatus.BAD_REQUEST, null, false);
+        return ResponseBaseModel.responseBuidler(ex.getMessage(), HttpStatus.NOT_FOUND, null, false);
     }
 
     @ExceptionHandler(value = {NullPropertyException.class})

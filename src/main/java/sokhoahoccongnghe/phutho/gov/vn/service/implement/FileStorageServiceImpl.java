@@ -9,10 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import sokhoahoccongnghe.phutho.gov.vn.dto.FileDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFileDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFileTypeDto;
 import sokhoahoccongnghe.phutho.gov.vn.exception.FileDownLoadException;
-import sokhoahoccongnghe.phutho.gov.vn.repository.FileRepository;
+import sokhoahoccongnghe.phutho.gov.vn.model.FileTypeEnum;
 import sokhoahoccongnghe.phutho.gov.vn.service.FileStorageService;
+import sokhoahoccongnghe.phutho.gov.vn.service.TopicFileService;
+import sokhoahoccongnghe.phutho.gov.vn.service.TopicFileTypeService;
+import sokhoahoccongnghe.phutho.gov.vn.util.VietnamStringNormalize;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,33 +27,27 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileStorageServiceImpl implements FileStorageService {
-    @Autowired
-    private FileRepository fileRepository;
 
-    private final Path rootFolder = Paths.get("store/files");
+    @Autowired
+    private TopicFileTypeService topicFileTypeService;
+
+    @Autowired
+    private TopicFileService topicFileService;
+
+    private final Path topicRootFolder = Paths.get("store/files/topic");
+    private final Path formRootFolder = Paths.get("store/files/form");
 
     @Override
     @Transactional(rollbackFor = {IOException.class})
-    public FileDto save(MultipartFile multipartFile, String fileType) throws IOException {
-        String convertType;
-        switch (fileType) {
-            case "Đề cương":
-                convertType = "decuong";
-                break;
-            case "Biểu mẫu":
-                convertType = "bieumau";
-                break;
-            default:
-                convertType = "unknown";
-        }
+    public TopicFileDto saveTopicFile(MultipartFile multipartFile, String topicFileType) throws IOException {
 
-        FileDto fileNeedSave = new FileDto();
+        TopicFileDto fileNeedSave = new TopicFileDto();
+        TopicFileTypeDto topicFileTypeNeedSave = topicFileTypeService.getTopicFileTypeByTitle(topicFileType);
+        fileNeedSave.setType(topicFileTypeNeedSave);
 
         String originFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-
         String fileExtension = FilenameUtils.getExtension(originFileName);
 
-//        System.out.println(multipartFile.getContentType() + "-" + fileExtension);
 
         fileNeedSave.setOriginName(originFileName);
         fileNeedSave.setSize(multipartFile.getSize());
@@ -57,14 +55,16 @@ public class FileStorageServiceImpl implements FileStorageService {
         String fileCode;
         do {
             fileCode = RandomStringUtils.randomAlphanumeric(8);
-        } while (fileRepository.existsById(fileCode));
+        } while (topicFileService.checkExistByFileCode(fileCode));
 
         fileNeedSave.setCode(fileCode);
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
-            String fileServerName = fileCode+"-"+convertType+"."+fileExtension;
+            String fileServerName = fileCode+"_"+
+                    VietnamStringNormalize.normalize(org.apache.commons.lang3.StringUtils.deleteWhitespace(topicFileTypeNeedSave.getTitle().toLowerCase()))+
+                    "."+fileExtension;
             fileNeedSave.setServerName(fileServerName);
-            Path filePath = rootFolder.resolve(fileServerName);
+            Path filePath = topicRootFolder.resolve(fileServerName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         }
 
@@ -72,27 +72,36 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public Resource getFileAsResource(String fileCode) {
+    public Resource getFileAsResource(String fileCode,String fileType) {
         Path[] fileNeedDownloadArr = {null}; // use array because can not modify local variable in lambda
-        try {
-            Files.list(rootFolder).forEach(file-> {
+        if (fileType.equals(FileTypeEnum.TOPIC.getValue())) {
+            if(!topicFileService.checkExistByFileCode(fileCode))
+                throw new FileDownLoadException("file " + fileCode + " not exist");
+            try {
+                Files.list(topicRootFolder).forEach(file -> {
 //                System.out.println(file.toString());
-               if(file.getFileName().toString().startsWith(fileCode)){
-                   fileNeedDownloadArr[0] = file;
-               }
-            });
-            if(fileNeedDownloadArr[0] != null){
-                return new UrlResource(fileNeedDownloadArr[0].toUri());
+                    if (file.getFileName().toString().startsWith(fileCode)) {
+                        fileNeedDownloadArr[0] = file;
+                    }
+                });
+                if (fileNeedDownloadArr[0] != null) {
+                    return new UrlResource(fileNeedDownloadArr[0].toUri());
+                } else throw new FileDownLoadException("file " + fileCode + " not exist");
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new FileDownLoadException("can not download file", e);
             }
-            else throw new FileDownLoadException("file "+fileCode+" not exist");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new FileDownLoadException("can not download file",e);
         }
+        else if(fileType.equals(FileTypeEnum.FORM.getValue())){
+            return null;
+        }
+        else
+            throw new FileDownLoadException("this file type does not exist:"+fileType);
     }
-    @Override
-    public boolean checkExistInFileSystem(String fileName) {
-        Path filePath = rootFolder.resolve(fileName);
-        return Files.exists(filePath);
-    }
+
+//    @Override
+//    public boolean checkExistInFileSystem(String fileName) {
+//        Path filePath = rootFolder.resolve(fileName);
+//        return Files.exists(filePath);
+//    }
 }

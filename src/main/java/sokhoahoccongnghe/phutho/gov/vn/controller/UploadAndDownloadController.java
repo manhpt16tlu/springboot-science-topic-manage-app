@@ -5,10 +5,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sokhoahoccongnghe.phutho.gov.vn.dto.FileDto;
-import sokhoahoccongnghe.phutho.gov.vn.model.MessageModel;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFileDto;
+import sokhoahoccongnghe.phutho.gov.vn.model.MessageEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
 import sokhoahoccongnghe.phutho.gov.vn.service.UploadAndDownloadService;
+import sokhoahoccongnghe.phutho.gov.vn.util.VietnamStringNormalize;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -19,19 +20,23 @@ public class UploadAndDownloadController {
     @Autowired
     private UploadAndDownloadService updownService;
 
-    @PostMapping(value = "/upload")
-    public ResponseEntity<Object> uploadFile(@RequestParam(name = "file") MultipartFile fileUpload,
-                                             @RequestParam(name = "type") String fileType,
-                                             @RequestParam(name = "title",required = false) String fileTitle,
-                                             @RequestParam(name = "topicId",required = false) Integer topicId) {
-        FileDto savedFile = updownService.upload(fileUpload, fileType,fileTitle,topicId);
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                savedFile, true);
+    @PostMapping(value = "/upload/topic")
+    public ResponseEntity<Object> uploadTopicFile(@RequestParam(name = "fileUpload") MultipartFile fileUpload,
+                                             @RequestParam(name = "topicFileType") String topicFileType,
+                                             @RequestParam(name = "topic") Integer topicId) {
+        TopicFileDto uploadedFile = updownService.uploadTopicFile(fileUpload,topicFileType,topicId);
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                uploadedFile, true);
+    }
+    @PostMapping(value = "/upload/form")
+    public ResponseEntity<Object> uploadFormFile() {
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                null, true);
     }
 
-    @GetMapping(value = "/download/{fileCode}")
-    public ResponseEntity<Object> downloadFile(@PathVariable String fileCode){
-        Resource fileResource = updownService.getFile(fileCode);
+    @GetMapping(value = "/download/{fileType}/{fileCode}")
+    public ResponseEntity<Object> downloadFile(@PathVariable String fileCode,@PathVariable String fileType){
+        Resource fileResource = updownService.getFile(fileType,fileCode);
         HttpHeaders headers = new HttpHeaders();
         //có hai cách tạo http headers
 //        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);

@@ -3,6 +3,7 @@ package sokhoahoccongnghe.phutho.gov.vn.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -11,14 +12,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "loai_tap_tin")
-public class FileType {
+@Table(name = "loai_tap_tin_de_tai")
+public class TopicFileType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ma")
+    @Column(name = "ma")
     private Integer id;
-    @Column(name="ten",nullable = false)
-    private String name;
-    @Column(name="mota")
+    @Column(name = "tieude")
+    private String title;
+    @Column(name = "ngaytao")
+    private Date createDate;
+    @Column(name = "mota")
     private String description;
 }

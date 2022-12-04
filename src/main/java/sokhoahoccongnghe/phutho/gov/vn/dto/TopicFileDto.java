@@ -1,23 +1,22 @@
 package sokhoahoccongnghe.phutho.gov.vn.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import sokhoahoccongnghe.phutho.gov.vn.entity.Topic;
+import sokhoahoccongnghe.phutho.gov.vn.entity.TopicFileType;
 
 import java.util.Date;
 
 @Getter
 @Setter
 @ToString
-public class FileDto {
+public class TopicFileDto {
     private String code;
     private String originName;
     private String serverName;
-    private String title;
     private TopicDto topic;
-    private FileTypeDto type;
+    private TopicFileTypeDto type;
     private long size;
-//    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
     private Date createDate;
 }

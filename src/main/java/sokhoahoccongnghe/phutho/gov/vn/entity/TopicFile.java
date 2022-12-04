@@ -12,28 +12,26 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tap_tin")
-public class File {
+@Table(name = "tap_tin_de_tai",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"madetai", "maloai"})})
+public class TopicFile {
     @Id
-    @Column(name="ma",nullable = false)
+    @Column(name = "ma", nullable = false)
     private String code;
 
-    @Column(name="tenbandau",nullable = false)
+    @Column(name = "tenbandau", nullable = false)
     private String originName;
 
-    @Column(name="tenmoi",nullable = false)
+    @Column(name = "tenmoi", nullable = false)
     private String serverName;
 
-    @Column(name="tieude")
-    private String title;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "madetai")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "madetai", nullable = false)
     private Topic topic;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "maloai", nullable = false)
-    private FileType type;
+    private TopicFileType type;
 
     @Column(name = "kichthuoc")
     private long size;

@@ -5,12 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sokhoahoccongnghe.phutho.gov.vn.dto.OrganDto;
-import sokhoahoccongnghe.phutho.gov.vn.mapper.OrganMapper;
-import sokhoahoccongnghe.phutho.gov.vn.model.MessageModel;
+import sokhoahoccongnghe.phutho.gov.vn.model.MessageEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
 import sokhoahoccongnghe.phutho.gov.vn.service.OrganService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/organ")
@@ -23,25 +20,25 @@ public class OrganController {
     @PostMapping
     public ResponseEntity<Object> createOrgan(@RequestBody OrganDto organRequest) {
         OrganDto organCreated = organService.createOrgan(organRequest);
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK, organCreated,
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK, organCreated,
                 true);
     }
 
     @GetMapping
     public ResponseEntity<Object> getOrgans(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue =
             "5") int size,@RequestParam(defaultValue = "") String search) {
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 organService.getOrgans(page,size,search), true);
     }
     @GetMapping(value="/nopaging")
     public ResponseEntity<Object> getOrgansNoPaging() {
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 organService.getOrgansNoPaging(), true);
     }
 
     @GetMapping(value="/need_approve")
     public ResponseEntity<Object> getOrgansNeedApprove() {
-        return ResponseBaseModel.responseBuidler(MessageModel.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 organService.getOrgansNeedApprove(), true);
     }
 
