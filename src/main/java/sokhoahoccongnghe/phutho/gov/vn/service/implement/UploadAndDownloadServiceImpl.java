@@ -5,6 +5,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import sokhoahoccongnghe.phutho.gov.vn.dto.FormDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.FormFileDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFileDto;
 import sokhoahoccongnghe.phutho.gov.vn.exception.FileUploadException;
 import sokhoahoccongnghe.phutho.gov.vn.service.*;
@@ -25,7 +27,14 @@ public class UploadAndDownloadServiceImpl implements UploadAndDownloadService {
     private TopicService topicService;
 
     @Autowired
+    private FormService formService;
+
+    @Autowired
+    private FormFileService formFileService;
+
+    @Autowired
     private TopicFileTypeService topicFileTypeService;
+
 
     @Override
     @Transactional(rollbackFor = {RuntimeException.class})
@@ -43,6 +52,22 @@ public class UploadAndDownloadServiceImpl implements UploadAndDownloadService {
         fileNeedSave.setCreateDate(new Date());
 
         return  topicFileService.createTopicFile(fileNeedSave);
+    }
+
+    @Override
+    @Transactional(rollbackFor = {RuntimeException.class})
+    public FormFileDto uploadFormFile(MultipartFile fileUpload, Integer formId) {
+        if(fileUpload.isEmpty()) throw new FileUploadException("file upload can not be NULL");
+        FormDto formNeedUpload =  formService.getFormById(formId);
+        FormFileDto fileNeedSave;
+        try {
+           fileNeedSave =  fileStorageService.saveFormFile(fileUpload,formNeedUpload);
+        } catch (IOException e) {
+            throw new FileUploadException("can not upload file",e);
+        }
+        fileNeedSave.setForm(formNeedUpload);
+        fileNeedSave.setCreateDate(new Date());
+        return formFileService.createFormFile(fileNeedSave);
     }
 
     @Override

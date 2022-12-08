@@ -24,7 +24,7 @@ public class FormFile {
     @Column(name = "tenmoi", nullable = false)
     private String serverName;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "mabieumau")
     private Form form;
 

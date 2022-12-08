@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sokhoahoccongnghe.phutho.gov.vn.model.MessageEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
+import sokhoahoccongnghe.phutho.gov.vn.service.FormService;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicService;
 
 @RestController
@@ -14,6 +15,9 @@ import sokhoahoccongnghe.phutho.gov.vn.service.TopicService;
 public class CountController {
     @Autowired
     private TopicService topicService;
+
+    @Autowired
+    private FormService formService;
     @GetMapping(value = "/topic/by/status_id")
     public ResponseEntity<Object> countTopicByStatusId(@RequestParam int organId, @RequestParam int statusId){
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
@@ -34,5 +38,11 @@ public class CountController {
     public ResponseEntity<Object> countTopicByName(@RequestParam String name){
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicService.countTopicByName(name), true);
+    }
+
+    @GetMapping(value = "/form/byName")
+    public ResponseEntity<Object> countFormByName(@RequestParam String name){
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                formService.countFormByName(name), true);
     }
 }

@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import sokhoahoccongnghe.phutho.gov.vn.dto.FormDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.FormFileDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFileDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFileTypeDto;
 import sokhoahoccongnghe.phutho.gov.vn.exception.FileDownLoadException;
 import sokhoahoccongnghe.phutho.gov.vn.model.FileTypeEnum;
 import sokhoahoccongnghe.phutho.gov.vn.service.FileStorageService;
+import sokhoahoccongnghe.phutho.gov.vn.service.FormFileService;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicFileService;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicFileTypeService;
 import sokhoahoccongnghe.phutho.gov.vn.util.VietnamStringNormalize;
@@ -33,6 +36,9 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Autowired
     private TopicFileService topicFileService;
+
+    @Autowired
+    private FormFileService formFileService;
 
     private final Path topicRootFolder = Paths.get("store/files/topic");
     private final Path formRootFolder = Paths.get("store/files/form");
@@ -97,6 +103,42 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
         else
             throw new FileDownLoadException("this file type does not exist:"+fileType);
+    }
+
+    @Override
+    public boolean deleteFile(String fileServerName) throws IOException {
+       Path filePath = formRootFolder.resolve(fileServerName);
+       return Files.deleteIfExists(filePath);
+    }
+
+
+    @Override
+    public FormFileDto saveFormFile(MultipartFile multipartFile, FormDto formNeedUpload) throws IOException {
+        FormFileDto fileNeedSave = new FormFileDto();
+
+        String originFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        String fileExtension = FilenameUtils.getExtension(originFileName);
+
+        fileNeedSave.setOriginName(originFileName);
+        fileNeedSave.setSize(multipartFile.getSize());
+
+        String fileCode;
+        do {
+            fileCode = RandomStringUtils.randomAlphanumeric(8);
+        } while (formFileService.checkExistByFileCode(fileCode));
+
+        fileNeedSave.setCode(fileCode);
+
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            String fileServerName = fileCode+"_"+
+                    VietnamStringNormalize.normalize(org.apache.commons.lang3.StringUtils.deleteWhitespace(formNeedUpload.getType().getTitle().toLowerCase()))+
+                    "."+fileExtension;
+            fileNeedSave.setServerName(fileServerName);
+            Path filePath = formRootFolder.resolve(fileServerName);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+
+        return fileNeedSave;
     }
 
 //    @Override

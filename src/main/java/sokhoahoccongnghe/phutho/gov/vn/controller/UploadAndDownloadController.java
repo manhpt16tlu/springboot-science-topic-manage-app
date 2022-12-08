@@ -29,10 +29,13 @@ public class UploadAndDownloadController {
                 uploadedFile, true);
     }
     @PostMapping(value = "/upload/form")
-    public ResponseEntity<Object> uploadFormFile() {
+    public ResponseEntity<Object> uploadFormFile(@RequestParam(name = "fileUpload") MultipartFile fileUpload,
+                                                 @RequestParam(name = "formId") Integer formId) {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                null, true);
+                updownService.uploadFormFile(fileUpload,formId), true);
     }
+
+
 
     @GetMapping(value = "/download/{fileType}/{fileCode}")
     public ResponseEntity<Object> downloadFile(@PathVariable String fileCode,@PathVariable String fileType){

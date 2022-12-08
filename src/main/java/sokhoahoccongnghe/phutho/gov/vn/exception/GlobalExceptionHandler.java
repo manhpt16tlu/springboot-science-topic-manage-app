@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(value = {FileUploadException.class,FileDownLoadException.class})
+    @ExceptionHandler(value = {FileUploadException.class,FileDownLoadException.class,FileDeleteException.class})
     public ResponseEntity<Object> handleFileException(RuntimeException ex) {
         ex.printStackTrace();
         if(ex.getCause() != null)
