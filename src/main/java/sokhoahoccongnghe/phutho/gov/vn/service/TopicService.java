@@ -21,7 +21,7 @@ public interface TopicService {
    List<TopicDto> getNonApprovedTopicsByOrgan(Integer organId);
    List<TopicDto> getTopicsByStatus(Integer statusId);
    List<TopicDto> getTopicsByResult(Integer resultId);
-   TopicDto getTopicByUID(String uid);
+//   TopicDto getTopicByUID(String uid);
    long countTopicByStatusId(Integer organId,Integer statusId);
    long countTopicByStatusName(Integer organId,String statusName);
    long countTopicByResult(Integer organId,Integer resultId);

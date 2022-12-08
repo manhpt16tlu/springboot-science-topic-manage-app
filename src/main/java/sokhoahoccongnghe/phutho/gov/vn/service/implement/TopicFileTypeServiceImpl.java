@@ -6,6 +6,7 @@ import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFileTypeDto;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicFileTypeMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.TopicFileTypeRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicFileTypeService;
+import sokhoahoccongnghe.phutho.gov.vn.view.TopicFileTypeView;
 
 @Service
 public class TopicFileTypeServiceImpl implements TopicFileTypeService {
@@ -19,7 +20,8 @@ public class TopicFileTypeServiceImpl implements TopicFileTypeService {
     }
 
     @Override
-    public TopicFileTypeDto getTopicFileTypeByTitle(String topicFileTypeTitle) {
-        return topicFileTypeMapper.entity2Dto(topicFileTypeRepository.findFirstByTitleContainingIgnoreCase(topicFileTypeTitle));
+    public TopicFileTypeView getTopicFileTypeViewByTitle(String topicFileTypeTitle) {
+       return topicFileTypeRepository.findFirstByTitleContains(topicFileTypeTitle);
+
     }
 }

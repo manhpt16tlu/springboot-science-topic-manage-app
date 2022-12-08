@@ -20,6 +20,7 @@ import sokhoahoccongnghe.phutho.gov.vn.service.FormFileService;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicFileService;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicFileTypeService;
 import sokhoahoccongnghe.phutho.gov.vn.util.VietnamStringNormalize;
+import sokhoahoccongnghe.phutho.gov.vn.view.TopicFileTypeView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +49,15 @@ public class FileStorageServiceImpl implements FileStorageService {
     public TopicFileDto saveTopicFile(MultipartFile multipartFile, String topicFileType) throws IOException {
 
         TopicFileDto fileNeedSave = new TopicFileDto();
-        TopicFileTypeDto topicFileTypeNeedSave = topicFileTypeService.getTopicFileTypeByTitle(topicFileType);
+
+        //làm thủ công do gặp lỗi
+        TopicFileTypeView topicFileTypeView = topicFileTypeService.getTopicFileTypeViewByTitle(topicFileType);
+        TopicFileTypeDto topicFileTypeNeedSave = new TopicFileTypeDto();
+        topicFileTypeNeedSave.setId(topicFileTypeView.getId());
+        topicFileTypeNeedSave.setTitle(topicFileTypeView.getTitle());
+        topicFileTypeNeedSave.setCreateDate(topicFileTypeView.getCreateDate());
+        topicFileTypeNeedSave.setDescription(topicFileTypeView.getDescript());
+
         fileNeedSave.setType(topicFileTypeNeedSave);
 
         String originFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());

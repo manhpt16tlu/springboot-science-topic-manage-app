@@ -1,7 +1,6 @@
 package sokhoahoccongnghe.phutho.gov.vn.service.implement;
 
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -74,12 +73,6 @@ public class TopicServiceImpl implements TopicService {
                                 TopicDto topicRequest) {
         Topic topicRequestEntity = topicMapper.dto2Entity(topicRequest);
 
-        String topicUid;
-        do {
-            topicUid = RandomStringUtils.randomAlphanumeric(8);
-        } while (topicRepository.existsByUid(topicUid));
-
-        topicRequestEntity.setUid(topicUid);
         return organRepository.findById(organId)
                 .map(organ -> {
 
@@ -114,11 +107,11 @@ public class TopicServiceImpl implements TopicService {
         return topicMapper.listEntity2Dto(topicListEntity);
     }
 
-    @Override
-    public TopicDto getTopicByUID(String uid) {
-        Topic topicEntity = topicRepository.findFirstByUid(uid);
-        return topicMapper.entity2Dto(topicEntity);
-    }
+//    @Override
+//    public TopicDto getTopicByUID(String uid) {
+//        Topic topicEntity = topicRepository.findFirstByUid(uid);
+//        return topicMapper.entity2Dto(topicEntity);
+//    }
 
     @Override
     public long countTopicByStatusId(Integer organId, Integer statusId) {

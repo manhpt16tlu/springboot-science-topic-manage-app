@@ -98,11 +98,11 @@ public class TopicController {
                 topicService.getTopicsByResult(resultId), true);
     }
 
-    @GetMapping(value = "/uid/{uid}/topic")
-    public ResponseEntity<Object> getTopicByUID(@PathVariable String uid) {
-        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.getTopicByUID(uid), true);
-    }
+//    @GetMapping(value = "/uid/{uid}/topic")
+//    public ResponseEntity<Object> getTopicByUID(@PathVariable String uid) {
+//        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+//                topicService.getTopicByUID(uid), true);
+//    }
 
     @PutMapping(value = "/topic/{id}")
     public ResponseEntity<Object> updateTopic(@PathVariable Integer id, @RequestBody TopicDto topicRequest) {

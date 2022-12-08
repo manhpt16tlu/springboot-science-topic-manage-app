@@ -30,10 +30,10 @@ public interface TopicRepository extends JpaRepository<Topic,Integer> {
                                                                                          Pageable p);
 //    @Query(value = "")
 //    Page<Topic> findApprovedTopicWithFilter();
-    Topic findFirstByUid(String uid);
+//    Topic findFirstByUid(String uid);
     long countByTopicStatusAndOrgan(TopicStatus s, Organ o);
     long countByTopicResultAndOrgan(TopicResult r, Organ o);
     long countByName(String name);
-    boolean existsByUid(String uid);
+//    boolean existsByUid(String uid);
 
 }
