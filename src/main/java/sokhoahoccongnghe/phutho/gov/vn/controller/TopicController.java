@@ -126,6 +126,26 @@ public class TopicController {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 null, true);
     }
+    @GetMapping(value = "/topic/countByStatusId")
+    public ResponseEntity<Object> countTopicByStatusId(@RequestParam int organId, @RequestParam int statusId){
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.countTopicByStatusId(organId,statusId), true);
+    }
+    @GetMapping(value = "/topic/countByStatusName")
+    public ResponseEntity<Object> countTopicByStatusName(@RequestParam int organId, @RequestParam String statusName){
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.countTopicByStatusName(organId,statusName), true);
+    }
 
+    @GetMapping(value = "/topic/countByStatusAndResult")
+    public ResponseEntity<Object> countTopicByStatusAndResult(@RequestParam int organId, @RequestParam int resultId){
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.countTopicByResult(organId,resultId), true);
+    }
+    @GetMapping(value = "/topic/countByName")
+    public ResponseEntity<Object> countTopicByName(@RequestParam String name){
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.countTopicByName(name), true);
+    }
 
 }

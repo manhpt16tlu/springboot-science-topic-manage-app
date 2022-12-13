@@ -28,6 +28,13 @@ public class GlobalExceptionHandler {
             ex.getCause().printStackTrace();
         return ResponseBaseModel.responseBuidler(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, false);
     }
+    @ExceptionHandler(value = {UserExistException.class})
+    public ResponseEntity<Object> handleSignUpException(RuntimeException ex) {
+        ex.printStackTrace();
+        if(ex.getCause() != null)
+            ex.getCause().printStackTrace();
+        return ResponseBaseModel.responseBuidler(ex.getMessage(), HttpStatus.BAD_REQUEST, null, false);
+    }
 
     @ExceptionHandler(value = {RuntimeException.class})
     public ResponseEntity<Object> handleGeneral(RuntimeException ex) {

@@ -26,4 +26,7 @@ public class Organ {
 
     @Column(name = "diachi")
     private String address;
+
+    @Column(name="email")
+    private String email;
 }

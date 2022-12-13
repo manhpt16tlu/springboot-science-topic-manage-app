@@ -35,4 +35,9 @@ public class FormController {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 null, true);
     }
+    @GetMapping(value = "/countByName")
+    public ResponseEntity<Object> countFormByName(@RequestParam String name){
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                formService.countFormByName(name), true);
+    }
 }
