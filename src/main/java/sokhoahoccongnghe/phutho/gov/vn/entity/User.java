@@ -1,5 +1,6 @@
 package sokhoahoccongnghe.phutho.gov.vn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,6 +32,7 @@ public class User {
     private Date createDate;
 
     @Column(name = "matkhau")
+    @JsonIgnore
     private String password;
 
 

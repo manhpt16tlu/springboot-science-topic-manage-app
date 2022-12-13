@@ -1,4 +1,4 @@
-package sokhoahoccongnghe.phutho.gov.vn.security.jwt;
+package sokhoahoccongnghe.phutho.gov.vn.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-//thực hiện khi user ko được xác thực truy cập hệ thống
-public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
+//handle exception cho filter
+public class AppAuthEntryPoint implements AuthenticationEntryPoint {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthEntryPoint.class);
+    private static final Logger logger = LoggerFactory.getLogger(AppAuthEntryPoint.class);
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
            logger.error("unauthorized error: {}",authException.getMessage());
            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Error: Unauthorized"); //401
     }
