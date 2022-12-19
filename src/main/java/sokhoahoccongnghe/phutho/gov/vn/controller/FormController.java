@@ -3,6 +3,7 @@ package sokhoahoccongnghe.phutho.gov.vn.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sokhoahoccongnghe.phutho.gov.vn.dto.FormDto;
 import sokhoahoccongnghe.phutho.gov.vn.model.MessageEnum;
@@ -24,20 +25,30 @@ public class FormController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> createForm(@RequestBody FormDto formRequest) {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 formService.createForm(formRequest) ,
                 true);
     }
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> deleteForm(@PathVariable Integer id) {
         formService.deleteById(id);
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 null, true);
     }
-    @GetMapping(value = "/countByName")
-    public ResponseEntity<Object> countFormByName(@RequestParam String name){
+    @GetMapping(value = "/existByName")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Object> existByFormName(@RequestParam String name){
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                formService.countFormByName(name), true);
+                formService.existByName(name), true);
     }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Object> getFormById(@PathVariable Integer id){
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                formService.getFormById(id), true);
+    }
+
 }

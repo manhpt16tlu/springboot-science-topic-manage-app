@@ -108,7 +108,22 @@ public class FileStorageServiceImpl implements FileStorageService {
             }
         }
         else if(fileType.equals(FileTypeEnum.FORM.getValue())){
-            return null;
+            if(!formFileService.checkExistByFileCode(fileCode))
+                throw new FileDownLoadException("file " + fileCode + " not exist");
+            try {
+                Files.list(formRootFolder).forEach(file -> {
+//                System.out.println(file.toString());
+                    if (file.getFileName().toString().startsWith(fileCode)) {
+                        fileNeedDownloadArr[0] = file;
+                    }
+                });
+                if (fileNeedDownloadArr[0] != null) {
+                    return new UrlResource(fileNeedDownloadArr[0].toUri());
+                } else throw new FileDownLoadException("file " + fileCode + " not exist");
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new FileDownLoadException("can not download file", e);
+            }
         }
         else
             throw new FileDownLoadException("this file type does not exist:"+fileType);

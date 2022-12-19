@@ -2,6 +2,7 @@ package sokhoahoccongnghe.phutho.gov.vn.dto.res;
 
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -14,4 +15,5 @@ public class JwtTokenResponse {
     private String username;
     private List<String> roles;
     private String type = "Bearer";
+    private Date expirationTime;
 }

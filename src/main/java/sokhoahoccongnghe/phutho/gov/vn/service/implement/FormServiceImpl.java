@@ -43,8 +43,8 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public long countFormByName(String name) {
-        return formRepository.countByName(name);
+    public boolean existByName(String name) {
+        return formRepository.existsByName(name);
     }
 
     @Override
@@ -58,11 +58,13 @@ public class FormServiceImpl implements FormService {
     public void deleteById(Integer formId) {
         Form formNeedDelete = GetEntityById.getEntity(formRepository,formId);
         FormFileDto formFileNeedDelete = formFileService.getByFormId(formNeedDelete.getId());
-        //delete from file system
-        try {
-            fileStorageService.deleteFile(formFileNeedDelete.getServerName());
-        } catch (IOException e) {
-            throw new FileDeleteException("can not delete file",e);
+        if(formFileNeedDelete != null) {
+            //delete from file system
+            try {
+                fileStorageService.deleteFile(formFileNeedDelete.getServerName());
+            } catch (IOException e) {
+                throw new FileDeleteException("can not delete file", e);
+            }
         }
         //delete from db
         formRepository.delete(formNeedDelete);

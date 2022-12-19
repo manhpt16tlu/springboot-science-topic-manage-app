@@ -6,5 +6,5 @@ import sokhoahoccongnghe.phutho.gov.vn.entity.Form;
 
 @Repository
 public interface FormRepository extends JpaRepository<Form,Integer> {
-    long countByName(String name);
+    boolean existsByName(String name);
 }

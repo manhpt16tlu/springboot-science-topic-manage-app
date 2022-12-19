@@ -21,15 +21,17 @@ public class JwtProvider {
     private int jwtExpiredTime;
 
     //    private String jwtExpiredTime = env.getProperty("quanlydetai.app.jwt.expired-time"); //có thể dùng env
-    public String generateToken(Authentication authentication) {
+    public String[] generateToken(Authentication authentication) {
         //user sau khi được xác thực
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-        return Jwts.builder()
+        long expiredTime = new Date().getTime()+ jwtExpiredTime;
+        return new String[] {Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
                 .setIssuedAt(new Date()) // thời điểm phát hành
-                .setExpiration(new Date(new Date().getTime() + jwtExpiredTime))
+                .setExpiration(new Date(expiredTime))
                 .signWith(SignatureAlgorithm.HS512, jwtSecretKey)
-                .compact();
+                .compact(),
+                String.valueOf(expiredTime)}; //expired time
     }
 
     public boolean validateToken(String token) {

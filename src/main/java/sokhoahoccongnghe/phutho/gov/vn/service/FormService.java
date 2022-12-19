@@ -5,7 +5,7 @@ import sokhoahoccongnghe.phutho.gov.vn.dto.FormDto;
 
 public interface FormService {
     FormDto createForm(FormDto formRequest);
-    long countFormByName(String name);
+    boolean existByName(String name);
     FormDto getFormById(Integer formId);
     void deleteById(Integer formId);
     Page<FormDto> getAllForm(int page,int size);

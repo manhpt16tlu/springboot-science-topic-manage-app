@@ -87,7 +87,7 @@ public class AuthController {
 
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtProvider.generateToken(authentication);
+        String[] jwt = jwtProvider.generateToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -95,7 +95,8 @@ public class AuthController {
         JwtTokenResponse response = new JwtTokenResponse();
         response.setRoles(roles);
         response.setUsername(userDetails.getUsername());
-        response.setAccessToken(jwt);
+        response.setAccessToken(jwt[0]);
+        response.setExpirationTime(new Date(Long.parseLong(jwt[1])));
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 response,
                 true);

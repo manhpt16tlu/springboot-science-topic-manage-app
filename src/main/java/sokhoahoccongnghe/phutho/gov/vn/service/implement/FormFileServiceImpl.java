@@ -29,6 +29,6 @@ public class FormFileServiceImpl implements FormFileService {
 
     @Override
     public FormFileDto getByFormId(Integer formId) {
-        return formFileMapper.entity2Dto(formFileRepository.findFirstByFormId(formId));
+        return formFileMapper.entity2Dto(formFileRepository.findByFormId(formId));
     }
 }

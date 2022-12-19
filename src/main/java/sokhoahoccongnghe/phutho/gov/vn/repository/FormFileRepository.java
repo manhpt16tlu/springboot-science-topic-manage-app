@@ -6,5 +6,5 @@ import sokhoahoccongnghe.phutho.gov.vn.entity.FormFile;
 
 @Repository
 public interface FormFileRepository extends JpaRepository<FormFile,String> {
-    FormFile findFirstByFormId(Integer formId);
+    FormFile findByFormId(Integer formId);
 }

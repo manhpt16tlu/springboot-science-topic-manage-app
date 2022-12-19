@@ -2,6 +2,7 @@ package sokhoahoccongnghe.phutho.gov.vn.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -47,6 +48,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleAuthentication(AuthenticationException ex) {
         ex.printStackTrace();
         return ResponseBaseModel.responseBuidler("can not authenticate user", HttpStatus.UNAUTHORIZED, null
+                , false);
+    }
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    public ResponseEntity<Object> handleAccessDenied(AccessDeniedException ex) {
+        ex.printStackTrace();
+        return ResponseBaseModel.responseBuidler("access denied", HttpStatus.FORBIDDEN, null
                 , false);
     }
 
