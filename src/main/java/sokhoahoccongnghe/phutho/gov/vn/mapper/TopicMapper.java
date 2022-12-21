@@ -8,13 +8,13 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface TopicMapper {
-//    @Mapping(source = "t.organ",target = "organDto")
     TopicDto entity2Dto(Topic t);
-//    @Mapping(source = "t.organDto",target = "organ")
     Topic dto2Entity(TopicDto t);
     List<TopicDto> listEntity2Dto(List<Topic> l);
-    OrganDto organ2OrganDto(Organ o); //mapstruct need to mapping topic vs topic dto
-    Organ organDto2Organ(OrganDto o); //mapstruct need to mapping topic vs topic dto
+    UserDto userEntity2Dto(User o); //mapstruct need to mapping topic vs topic dto
+    User userDto2Entity(UserDto o); //mapstruct need to mapping topic vs topic dto
+    OrganDto userEntity2Dto(Organ o); //mapstruct need to mapping topic vs topic dto
+    Organ userDto2Entity(OrganDto o);
     TopicField fieldDto2Entity(TopicFieldDto t); //mapstruct need to mapping topic vs topic dto
     TopicFieldDto fieldEntity2Dto(TopicField t);//mapstruct need to mapping topic vs topic dto
     TopicStatusDto statusEntity2Dto(TopicStatus t);

@@ -42,6 +42,11 @@ public class TopicStatusServiceImpl implements TopicStatusService {
         statusRepository.save(statusEntity);
     }
 
+    @Override
+    public TopicStatusDto getByName(String name) {
+        return statusMapper.entity2Dto(statusRepository.findByTitle(name));
+    }
+
 
     @Override
     public List<TopicStatusDto> getAllStatus() {

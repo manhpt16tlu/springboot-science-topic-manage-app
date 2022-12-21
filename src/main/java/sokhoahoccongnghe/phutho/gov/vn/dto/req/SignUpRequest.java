@@ -20,7 +20,7 @@ import java.util.Set;
 public class SignUpRequest {
 
     @NotBlank
-    @Size(min = 10,max = 30)
+    @Size(min = 10,max = 50)
     private String username;
 
     @NotBlank
@@ -37,6 +37,5 @@ public class SignUpRequest {
     @NotEmpty
     private Set<String> roles;
 
-    @NotNull
     private RankDto rank;
 }

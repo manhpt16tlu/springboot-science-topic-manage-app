@@ -1,10 +1,12 @@
 package sokhoahoccongnghe.phutho.gov.vn.service.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sokhoahoccongnghe.phutho.gov.vn.dto.UserDto;
 import sokhoahoccongnghe.phutho.gov.vn.entity.User;
+import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.UserMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.UserRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.UserService;
@@ -20,8 +22,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Override
-    public Optional<UserDto> getUserByUsername(String username) {
-        return userRepository.findByUsername(username).map(userMapper::entity2Dto);
+    public UserDto getUserByUsername(String username) {
+        return userRepository.findByUsername(username).map(userMapper::entity2Dto)
+                .orElseThrow(NotFoundException::new);
     }
 
     @Override

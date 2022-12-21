@@ -53,6 +53,6 @@ public class User {
     private Organ organ;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "mabangcap", nullable = false)
+    @JoinColumn(name = "mabangcap")
     private Rank rank;
 }

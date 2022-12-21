@@ -4,8 +4,12 @@ package sokhoahoccongnghe.phutho.gov.vn.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFieldDto;
+import sokhoahoccongnghe.phutho.gov.vn.dto.TopicStatusDto;
+import sokhoahoccongnghe.phutho.gov.vn.entity.TopicStatus;
 import sokhoahoccongnghe.phutho.gov.vn.model.MessageEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicService;
@@ -80,11 +84,11 @@ public class TopicController {
                 topicService.getTopicsByField(fieldId), true);
     }
 
-    @GetMapping(value = "/organ/{organId}/topic")
-    public ResponseEntity<Object> getTopicsByOrganId(@PathVariable Integer organId) {
-        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.getTopicsByOrgan(organId), true);
-    }
+//    @GetMapping(value = "/organ/{organId}/topic")
+//    public ResponseEntity<Object> getTopicsByOrganId(@PathVariable Integer organId) {
+//        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+//                topicService.getTopicsByOrgan(organId), true);
+//    }
 
     @GetMapping(value = "/status/{statusId}/topic")
     public ResponseEntity<Object> getTopicsByStatusId(@PathVariable Integer statusId) {
@@ -126,26 +130,50 @@ public class TopicController {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 null, true);
     }
-    @GetMapping(value = "/topic/countByStatusId")
-    public ResponseEntity<Object> countTopicByStatusId(@RequestParam int organId, @RequestParam int statusId){
-        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.countTopicByStatusId(organId,statusId), true);
-    }
-    @GetMapping(value = "/topic/countByStatusName")
-    public ResponseEntity<Object> countTopicByStatusName(@RequestParam int organId, @RequestParam String statusName){
-        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.countTopicByStatusName(organId,statusName), true);
-    }
+//    @GetMapping(value = "/topic/countByStatusId")
+//    public ResponseEntity<Object> countTopicByStatusId(@RequestParam int organId, @RequestParam int statusId){
+//        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+//                topicService.countTopicByStatusId(organId,statusId), true);
+//    }
+//    @GetMapping(value = "/topic/countByStatusName")
+//    public ResponseEntity<Object> countTopicByStatusName(@RequestParam int organId, @RequestParam String statusName){
+//        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+//                topicService.countTopicByStatusName(organId,statusName), true);
+//    }
 
-    @GetMapping(value = "/topic/countByStatusAndResult")
-    public ResponseEntity<Object> countTopicByStatusAndResult(@RequestParam int organId, @RequestParam int resultId){
-        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.countTopicByResult(organId,resultId), true);
-    }
+//    @GetMapping(value = "/topic/countByStatusAndResult")
+//    public ResponseEntity<Object> countTopicByStatusAndResult(@RequestParam int organId, @RequestParam int resultId){
+//        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+//                topicService.countTopicByResult(organId,resultId), true);
+//    }
     @GetMapping(value = "/topic/countByName")
     public ResponseEntity<Object> countTopicByName(@RequestParam String name){
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicService.countTopicByName(name), true);
     }
 
+    @GetMapping(value = "/topic/existByName")
+    public ResponseEntity<Object> existByTopicName(@RequestParam String name){
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.existByName(name), true);
+    }
+
+    @PostMapping(value = {"/topic/employeeCreate"})
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    public ResponseEntity<Object> employeeCreateTopic(@RequestBody TopicDto topicRequest) {
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.employeeCreateTopic(topicRequest), true);
+
+    }
+
+    @GetMapping(value = "/topic/getAllByUser/{username}")
+    public ResponseEntity<Object> getAllByUsername(@PathVariable String username,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "7") int size,
+                                                   @RequestParam(required = false) String field,
+                                                   @RequestParam(required = false,name = "name") String topicName,
+                                                   @RequestParam(required = false) String status) {
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getTopicByUserIdWithFilter(page,size,username,topicName,status,field), true);
+    }
 }

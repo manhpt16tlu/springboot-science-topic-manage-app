@@ -24,8 +24,10 @@ public class Topic {
     @Column(name = "ten", nullable = false)
     private String name;
 
-    @Column(name = "chunhiem", nullable = false)
-    private String manager;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "manguoidung", nullable = false)
+    private User manager;
 
     @Column(name = "ngaybatdau",nullable = false)
 //    @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
@@ -42,8 +44,9 @@ public class Topic {
     @Column(name = "kinhphi")
     private Long expense;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "macoquan", nullable = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "macoquan", nullable = false)
+    @Transient
     private Organ organ;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

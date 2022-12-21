@@ -54,4 +54,9 @@ public class TopicResultServiceImpl implements TopicResultService {
         resultEntity.setDescription(resultRequest.getDescription());
         resultRepository.save(resultEntity);
     }
+
+    @Override
+    public TopicResultDto getResultByName(String name) {
+        return resultMapper.entity2Dto(resultRepository.findByTitle(name));
+    }
 }

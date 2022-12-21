@@ -10,4 +10,5 @@ public interface TopicResultService {
     TopicResultDto getResult(Integer id);
     void deleteResult(Integer id);
     void updateResult(Integer id,TopicResultDto resultRequest);
+    TopicResultDto getResultByName(String name);
 }

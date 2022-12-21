@@ -10,4 +10,5 @@ public interface TopicStatusService {
     TopicStatusDto createStatus(TopicStatusDto statusRequest);
     void deleteStatus(Integer id);
     void updateStatus(Integer id,TopicStatusDto statusRequest);
+    TopicStatusDto getByName(String name);
 }

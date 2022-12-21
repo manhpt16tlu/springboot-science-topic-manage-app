@@ -2,6 +2,7 @@ package sokhoahoccongnghe.phutho.gov.vn.entity;
 
 
 import lombok.*;
+import sokhoahoccongnghe.phutho.gov.vn.model.TopicStatusEnum;
 
 import javax.persistence.*;
 
