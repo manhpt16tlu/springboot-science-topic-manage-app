@@ -3,6 +3,7 @@ package sokhoahoccongnghe.phutho.gov.vn.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -21,4 +22,7 @@ public class TopicField {
     private String title;
     @Column(name="mota")
     private String description;
+
+    @Column(name="ngaytao")
+    private Date createDate;
 }

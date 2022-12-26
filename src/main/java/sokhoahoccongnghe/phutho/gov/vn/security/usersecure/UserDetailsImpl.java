@@ -17,13 +17,17 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private boolean disabled;
+
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Integer id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(Integer id, String username, String password,
+                           boolean disabled, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+        this.disabled = disabled;
     }
 
     public static UserDetailsImpl build(User user){
@@ -35,6 +39,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
+                user.isDisabled(),
                 authorities
         );
     }
@@ -71,8 +76,8 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
-    }
+        return !disabled;
+    } // có thể bỏ do đã handle ở UserDetailService
 
     public Integer getId() {
         return id;

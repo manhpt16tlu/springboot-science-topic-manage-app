@@ -5,6 +5,7 @@ import lombok.*;
 import sokhoahoccongnghe.phutho.gov.vn.model.TopicStatusEnum;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -25,4 +26,7 @@ public class TopicStatus {
 
     @Column(name = "mota")
     private String description;
+
+    @Column(name="ngaytao")
+    private Date createDate;
 }

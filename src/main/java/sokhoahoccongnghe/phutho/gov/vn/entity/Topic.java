@@ -3,6 +3,8 @@ package sokhoahoccongnghe.phutho.gov.vn.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +16,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@SQLDelete(sql = "update de_tai set xoa = true WHERE ma=?") //override delete
+@Where(clause = "xoa = false") // filter bản ghi
 @Table(name = "de_tai")
 public class Topic {
     @Id
@@ -61,4 +65,7 @@ public class Topic {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "maketqua", nullable = false)
     private TopicResult topicResult;
+
+    @Column(name = "xoa")
+    private boolean deleted = false;
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import sokhoahoccongnghe.phutho.gov.vn.dto.OrganDto;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
@@ -13,6 +14,7 @@ import sokhoahoccongnghe.phutho.gov.vn.repository.OrganRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.OrganService;
 import sokhoahoccongnghe.phutho.gov.vn.view.CountTopicOfOrganView;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,18 +27,23 @@ public class OrganServiceImpl implements OrganService {
     @Override
     public OrganDto createOrgan(OrganDto organDto) {
         Organ organEntity = organMapper.dto2Entity(organDto);
-        Organ  organCreated = organRepository.save(organEntity);
+        organEntity.setCreateDate(new Date());
+        Organ organCreated = organRepository.save(organEntity);
+
         return organMapper.entity2Dto(organCreated);
     }
 
     @Override
-    public Page<OrganDto> getOrgans(int page,int size,String search) {
-         Pageable paging = PageRequest.of(page,size);
-         Page<Organ> organPageEntity;
-         if(search.equals("")) organPageEntity=organRepository.findAll(paging);
-         else
-             organPageEntity = organRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(search,search,paging);
-         return organPageEntity.map(organMapper::entity2Dto);
+    public Page<OrganDto> getAllWithFilter(int page, int size) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createDate");//tạo sau thì hiển thị trước
+        Pageable paging = PageRequest.of(page, size, sort);
+        Page<Organ> organPageEntity = organRepository.findAllWithFilter(paging);
+        return organPageEntity.map(organMapper::entity2Dto);
+    }
+
+    @Override
+    public boolean existByName(String name) {
+         return organRepository.existsByName(name);
     }
 
     @Override
@@ -64,6 +71,7 @@ public class OrganServiceImpl implements OrganService {
     public void updateOrgan(Integer id,OrganDto organRequest){
         Organ organFinded = getOrganEntity(id);
         organFinded.setName(organRequest.getName());
+        organFinded.setEmail(organRequest.getEmail());
         organFinded.setAddress(organRequest.getAddress());
         organRepository.save(organFinded);
     }

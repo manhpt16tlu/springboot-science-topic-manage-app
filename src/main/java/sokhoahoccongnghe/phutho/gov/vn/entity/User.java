@@ -35,6 +35,9 @@ public class User {
     @JsonIgnore
     private String password;
 
+    @Column(name = "vohieuhoa")
+    private boolean disabled;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

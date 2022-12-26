@@ -1,6 +1,7 @@
 package sokhoahoccongnghe.phutho.gov.vn.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,11 +19,13 @@ public class TopicDto {
     private Date startDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
-//    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
+
     private Date createDate;
     private Long expense;
+    @JsonIgnore
     private OrganDto organ;
     private TopicFieldDto topicField;
     private TopicStatusDto topicStatus;
     private TopicResultDto topicResult;
+    private boolean deleted;
 }

@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface OrganService {
     OrganDto createOrgan(OrganDto o);
-    Page<OrganDto> getOrgans(int page, int size,String search);
+    Page<OrganDto> getAllWithFilter(int page, int size);
+    boolean existByName(String name);
     List<OrganDto> getOrgansNoPaging();
     List<CountTopicOfOrganView> getOrgansNeedApprove();
     OrganDto getOrgan(Integer id);

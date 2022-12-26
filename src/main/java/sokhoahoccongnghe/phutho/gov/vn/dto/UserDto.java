@@ -16,7 +16,7 @@ public class UserDto {
     private String name;
     private String username;
     private Date createDate;
-
+    private  boolean disabled;
     @JsonIgnore
     private String password;
     private Set<RoleDto> roles;

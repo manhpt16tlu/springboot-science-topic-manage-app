@@ -38,6 +38,15 @@ public interface TopicRepository extends JpaRepository<Topic,Integer> {
                                         @Param("status") TopicStatus status,
                                         @Param("field") TopicField field,
                                         Pageable p);
+    @Query(value ="select t from Topic t where t.topicStatus <> :statusIgnore and (:topicName is null or t.name like " +
+            "%:topicName%) and (:managerName is null or t.manager.name like %:managerName%) and (:statusFilter is " +
+            "null or t.topicStatus = :statusFilter) and (:organ is null or t.manager.organ = :organ)")
+    Page<Topic> findByAdminWithFilter(@Param("statusIgnore") TopicStatus statusIgnore,
+                                      @Param("statusFilter") TopicStatus statusFilter,
+                                      @Param("topicName") String topicName,
+                                      @Param("managerName") String managerName,
+                                      @Param("organ") Organ organ,
+                                      Pageable p);
 
 
 

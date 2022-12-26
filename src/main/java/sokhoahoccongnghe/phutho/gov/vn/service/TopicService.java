@@ -22,8 +22,10 @@ public interface TopicService {
    List<TopicDto> getNonApprovedTopicsByOrgan(Integer organId);
    List<TopicDto> getTopicsByStatus(Integer statusId);
    List<TopicDto> getTopicsByResult(Integer resultId);
-   Page<TopicDto> getTopicByUserIdWithFilter(int page,int size,String username,String topicName,String status,
+   Page<TopicDto> getTopicByUsernameWithFilter(int page,int size,String username,String topicName,String status,
                                              String field);
+   Page<TopicDto> getTopicByAdminWithFilter(int page, int size, String topicName, String organ, String managerName,
+                                            String status);
 //   TopicDto getTopicByUID(String uid);
 //   long countTopicByStatusId(Integer organId,Integer statusId);
 //   long countTopicByStatusName(Integer organId,String statusName);

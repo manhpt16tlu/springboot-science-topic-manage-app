@@ -25,11 +25,19 @@ public class OrganController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getOrgans(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue =
-            "5") int size,@RequestParam(defaultValue = "") String search) {
+    public ResponseEntity<Object> getAllWithFilter(@RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "7") int size
+                                                  ) {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                organService.getOrgans(page,size,search), true);
+                organService.getAllWithFilter(page, size), true);
     }
+
+    @GetMapping(value = "/existByName/{name}")
+    public ResponseEntity<Object> existByName(@PathVariable String name) {
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                organService.existByName(name), true);
+    }
+
     @GetMapping(value="/nopaging")
     public ResponseEntity<Object> getOrgansNoPaging() {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,

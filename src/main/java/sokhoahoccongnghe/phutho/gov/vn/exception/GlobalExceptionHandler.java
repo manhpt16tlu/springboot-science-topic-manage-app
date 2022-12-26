@@ -3,9 +3,11 @@ package sokhoahoccongnghe.phutho.gov.vn.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import sokhoahoccongnghe.phutho.gov.vn.model.MessageEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
 
 @RestControllerAdvice
@@ -41,13 +43,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {RuntimeException.class})
     public ResponseEntity<Object> handleGeneral(RuntimeException ex) {
         ex.printStackTrace();
-        return ResponseBaseModel.responseBuidler("unknown server error", HttpStatus.INTERNAL_SERVER_ERROR, null
+        return ResponseBaseModel.responseBuidler("server error", HttpStatus.INTERNAL_SERVER_ERROR, null
                 , false);
     }
     @ExceptionHandler(value = {AuthenticationException.class})
     public ResponseEntity<Object> handleAuthentication(AuthenticationException ex) {
         ex.printStackTrace();
-        return ResponseBaseModel.responseBuidler("can not authenticate user", HttpStatus.UNAUTHORIZED, null
+        String mess;
+        if(ex instanceof DisabledException)
+            mess = MessageEnum.USER_DISABLED.getValue();
+        else mess = MessageEnum.USER_UNAUTHORIZED.getValue();
+        return ResponseBaseModel.responseBuidler(mess, HttpStatus.UNAUTHORIZED, null
                 , false);
     }
     @ExceptionHandler(value = {AccessDeniedException.class})

@@ -4,8 +4,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
+import sokhoahoccongnghe.phutho.gov.vn.entity.TopicField;
+import sokhoahoccongnghe.phutho.gov.vn.entity.TopicStatus;
 import sokhoahoccongnghe.phutho.gov.vn.view.CountTopicOfOrganView;
 
 import java.util.List;
@@ -21,4 +24,8 @@ public interface OrganRepository extends JpaRepository<Organ,Integer> {
             "\n" +
             "group by organ.ma;",nativeQuery = true)
     List<CountTopicOfOrganView> findByStatusWhichNeedApprove();
+    boolean existsByName(String name);
+
+    @Query(value = "select o from Organ o")
+    Page<Organ> findAllWithFilter(Pageable p);
 }

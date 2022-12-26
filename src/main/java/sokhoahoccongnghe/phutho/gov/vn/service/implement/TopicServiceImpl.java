@@ -17,6 +17,7 @@ import sokhoahoccongnghe.phutho.gov.vn.entity.*;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NullPropertyException;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicMapper;
+import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicStatusMapper;
 import sokhoahoccongnghe.phutho.gov.vn.model.TopicResultEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.TopicStatusEnum;
 import sokhoahoccongnghe.phutho.gov.vn.repository.*;
@@ -48,6 +49,9 @@ public class TopicServiceImpl implements TopicService {
 
     @Autowired
     private TopicMapper topicMapper;
+
+    @Autowired
+    private TopicStatusMapper statusMapper;
 
     @Autowired
     private TopicResultService topicResultService;
@@ -122,7 +126,8 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Page<TopicDto> getTopicByUserIdWithFilter(int page, int size, String username,String topicName,String status,
+    public Page<TopicDto> getTopicByUsernameWithFilter(int page, int size, String username,String topicName,
+                                                      String status,
                                                      String field) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createDate");//tạo sau thì hiển thị trước
         Pageable paging = PageRequest.of(page, size, sort);
@@ -135,6 +140,29 @@ public class TopicServiceImpl implements TopicService {
 
         Page<Topic> topicPageEntity = topicRepository.findByManagerWithFilter(username,topicName,statusFilterEntity,
                 fieldFilterEntity,paging);
+        return topicPageEntity.map(topicMapper::entity2Dto);
+    }
+
+    @Override
+    public Page<TopicDto> getTopicByAdminWithFilter(int page, int size,String topicName, String organ, String managerName,
+                                                    String status) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createDate");//tạo sau thì hiển thị trước
+        Pageable paging = PageRequest.of(page, size, sort);
+
+        Gson gson = new Gson();
+
+        TopicStatus statusFilterEntity = gson.fromJson(status,TopicStatus.class);
+        Organ organFilterEntity = gson.fromJson(organ,Organ.class);
+        TopicStatus notApprovedStatus =
+                statusMapper.dto2Entity(topicStatusService.getByName(TopicStatusEnum.CHUA_DUYET.getValue()));
+
+        Page<Topic> topicPageEntity = topicRepository.findByAdminWithFilter(
+                notApprovedStatus,
+                statusFilterEntity,
+                topicName,
+                managerName,
+                organFilterEntity,
+                paging);
         return topicPageEntity.map(topicMapper::entity2Dto);
     }
 
@@ -280,8 +308,6 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public void deleteTopic(Integer id) {
         topicRepository.deleteById(id);
-//        Topic topicFinded = GetEntityById.getEntity(topicRepository, id);
-//        topicRepository.delete(topicFinded);
     }
 
     @Override

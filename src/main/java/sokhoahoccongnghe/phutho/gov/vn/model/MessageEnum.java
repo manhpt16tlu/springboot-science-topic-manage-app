@@ -8,6 +8,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public enum MessageEnum {
     REQUEST_SUCCESS("Request Success"),
-    REQUEST_FAIL("Request Fail");
+    REQUEST_FAIL("Request Fail"),
+    USER_DISABLED("User is disabled"),
+    USER_UNAUTHORIZED("Can not authenticate user");
+
     private final String value;
 }

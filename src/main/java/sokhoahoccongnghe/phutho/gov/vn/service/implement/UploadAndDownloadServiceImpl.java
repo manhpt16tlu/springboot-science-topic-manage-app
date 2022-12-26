@@ -39,6 +39,7 @@ public class UploadAndDownloadServiceImpl implements UploadAndDownloadService {
     @Override
     @Transactional(rollbackFor = {RuntimeException.class})
     public TopicFileDto uploadTopicFile(MultipartFile fileUpload, String topicFileType, Integer topicId) {
+        //check file upload k tồn tại hoặc không có nội dung
         if(fileUpload.isEmpty()) throw new FileUploadException("file upload can not be NULL");
         TopicFileDto fileNeedSave;
         try{

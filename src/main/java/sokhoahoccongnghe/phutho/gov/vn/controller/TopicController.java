@@ -166,6 +166,19 @@ public class TopicController {
 
     }
 
+    @GetMapping(value = {"/topic/adminGetTopics"})
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Object> adminGetTopics( @RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "7") int size,
+                                                  @RequestParam(required = false,name = "name") String topicName,
+                                                  @RequestParam(required = false,name = "organ") String organ,
+                                                  @RequestParam(required = false,name = "manager") String managerName,
+                                                  @RequestParam(required = false,name = "status") String status
+    ) {
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getTopicByAdminWithFilter(page,size,topicName,organ,managerName,status), true);
+    }
+
     @GetMapping(value = "/topic/getAllByUser/{username}")
     public ResponseEntity<Object> getAllByUsername(@PathVariable String username,
                                                @RequestParam(defaultValue = "0") int page,
@@ -174,6 +187,6 @@ public class TopicController {
                                                    @RequestParam(required = false,name = "name") String topicName,
                                                    @RequestParam(required = false) String status) {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                topicService.getTopicByUserIdWithFilter(page,size,username,topicName,status,field), true);
+                topicService.getTopicByUsernameWithFilter(page,size,username,topicName,status,field), true);
     }
 }
