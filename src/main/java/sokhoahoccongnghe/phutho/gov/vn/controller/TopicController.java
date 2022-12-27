@@ -110,7 +110,7 @@ public class TopicController {
 
     @PutMapping(value = "/topic/{id}")
     public ResponseEntity<Object> updateTopic(@PathVariable Integer id, @RequestBody TopicDto topicRequest) {
-        topicService.udpateTopic(id, topicRequest);
+        topicService.updateTopic(id, topicRequest);
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 null, true);
     }

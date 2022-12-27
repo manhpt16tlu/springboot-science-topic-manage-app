@@ -10,7 +10,7 @@ public interface TopicService {
    TopicDto getTopic(Integer id);
    TopicDto createTopic(Integer organId,Integer fieldId,Integer statusId,Integer resultId,TopicDto topicRequest);
    TopicDto employeeCreateTopic(TopicDto topicRequest);
-   void udpateTopic(Integer id,TopicDto topicRequest);
+   void updateTopic(Integer id,TopicDto topicRequest);
    void deleteTopic(Integer id);
    void approveTopic(Integer topicId,TopicDto topicRequest);
    List<TopicDto> getTopicsByField(Integer fieldId);

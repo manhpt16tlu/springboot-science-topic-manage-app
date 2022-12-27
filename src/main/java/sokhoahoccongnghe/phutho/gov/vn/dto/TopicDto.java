@@ -15,11 +15,8 @@ public class TopicDto {
     private Integer id;
     private String name;
     private UserDto manager;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
-
     private Date createDate;
     private Long expense;
     @JsonIgnore

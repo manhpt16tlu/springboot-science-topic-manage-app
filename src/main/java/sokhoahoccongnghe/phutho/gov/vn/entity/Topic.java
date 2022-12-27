@@ -34,11 +34,9 @@ public class Topic {
     private User manager;
 
     @Column(name = "ngaybatdau",nullable = false)
-//    @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
     private Date startDate;
 
     @Column(name = "ngayketthuc",nullable = false)
-//    @JsonFormat(pattern = "yyyy-MM-dd") //timezone set in resources/application.properties
     private Date endDate;
 
     @Column(name = "ngaytao",nullable = false)
@@ -48,8 +46,6 @@ public class Topic {
     @Column(name = "kinhphi")
     private Long expense;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "macoquan", nullable = false)
     @Transient
     private Organ organ;
 

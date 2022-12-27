@@ -17,6 +17,7 @@ import sokhoahoccongnghe.phutho.gov.vn.entity.*;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NullPropertyException;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicMapper;
+import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicResultMapper;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.TopicStatusMapper;
 import sokhoahoccongnghe.phutho.gov.vn.model.TopicResultEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.TopicStatusEnum;
@@ -52,6 +53,9 @@ public class TopicServiceImpl implements TopicService {
 
     @Autowired
     private TopicStatusMapper statusMapper;
+
+    @Autowired
+    private TopicResultMapper resultMapper;
 
     @Autowired
     private TopicResultService topicResultService;
@@ -205,38 +209,22 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     @Transactional(rollbackFor = {RuntimeException.class})
-    public void udpateTopic(Integer id, TopicDto topicRequest) {
-        Topic topicFinded = GetEntityById.getEntity(topicRepository, id);
+    public void updateTopic(Integer id, TopicDto topicRequest) {
+        Topic oldTopic = GetEntityById.getEntity(topicRepository, id);
 
-//        topicFinded.setManager(topicRequest.getManager());
-        topicFinded.setName(topicRequest.getName());
-        topicFinded.setStartDate(topicRequest.getStartDate());
-        topicFinded.setEndDate(topicRequest.getEndDate());
-        topicFinded.setExpense(topicRequest.getExpense());
+        oldTopic.setName(topicRequest.getName());
+        oldTopic.setStartDate(topicRequest.getStartDate());
+        oldTopic.setEndDate(topicRequest.getEndDate());
+        oldTopic.setExpense(topicRequest.getExpense());
 
-        TopicFieldDto fieldOfTopicReq = topicRequest.getTopicField();
-        TopicStatusDto statusOfTopicReq = topicRequest.getTopicStatus();
-        TopicResultDto resultOfTopicReq = topicRequest.getTopicResult();
+        TopicStatus statusOfTopicReq = statusMapper.dto2Entity(topicRequest.getTopicStatus());
+        TopicResult resultOfTopicReq = resultMapper.dto2Entity(topicRequest.getTopicResult());
 
-        if (fieldOfTopicReq != null && fieldOfTopicReq.getId() != null) {
-            Integer fieldIdOfTopicRequest = fieldOfTopicReq.getId();
-            TopicField fieldEntity = GetEntityById.getEntity(fieldRepository, fieldIdOfTopicRequest);
-            topicFinded.setTopicField(fieldEntity);
-        } else throw new NullPropertyException();
+        oldTopic.setTopicStatus(statusOfTopicReq);
+        if(resultOfTopicReq != null)
+            oldTopic.setTopicResult(resultOfTopicReq);
 
-        if (statusOfTopicReq != null && statusOfTopicReq.getId() != null) {
-            Integer statusIdOfTopicReq = statusOfTopicReq.getId();
-            TopicStatus statusEntity = GetEntityById.getEntity(statusRepository, statusIdOfTopicReq);
-            topicFinded.setTopicStatus(statusEntity);
-        } else throw new NullPropertyException();
-
-        if (resultOfTopicReq != null && resultOfTopicReq.getId() != null) {
-            Integer resultIdOfTopicReq = resultOfTopicReq.getId();
-            TopicResult resultEntity = GetEntityById.getEntity(resultRepository, resultIdOfTopicReq);
-            topicFinded.setTopicResult(resultEntity);
-        } else throw new NullPropertyException();
-
-        topicRepository.save(topicFinded);
+        Topic newTopic = topicRepository.save(oldTopic);
     }
 
     @Override
