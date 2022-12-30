@@ -1,5 +1,6 @@
 package sokhoahoccongnghe.phutho.gov.vn.service.implement;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sokhoahoccongnghe.phutho.gov.vn.dto.FormDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.FormFileDto;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Form;
+import sokhoahoccongnghe.phutho.gov.vn.entity.FormType;
 import sokhoahoccongnghe.phutho.gov.vn.exception.FileDeleteException;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.FormMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.FormRepository;
@@ -71,10 +73,13 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Page<FormDto> getAllForm(int page, int size) {
+    public Page<FormDto> getAllForm(int page, int size,String formName,String formType) {
         Sort sort = Sort.by(Sort.Direction.DESC,"createDate");
         Pageable paging = PageRequest.of(page,size,sort);
-        Page<Form> formPageEntity = formRepository.findAll(paging);
+
+        Gson gson = new Gson();
+        FormType formTypeEntity = gson.fromJson(formType,FormType.class);
+        Page<Form> formPageEntity = formRepository.getAll(formName,formTypeEntity,paging);
         return formPageEntity.map(formMapper::entity2Dto);
     }
 }

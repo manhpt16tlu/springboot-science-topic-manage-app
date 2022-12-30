@@ -12,7 +12,7 @@ public interface TopicService {
    TopicDto employeeCreateTopic(TopicDto topicRequest);
    void updateTopic(Integer id,TopicDto topicRequest);
    void deleteTopic(Integer id);
-   void approveTopic(Integer topicId,TopicDto topicRequest);
+   void approveTopic(Integer topicId);
    List<TopicDto> getTopicsByField(Integer fieldId);
    List<TopicDto> getTopicsNoPaging();
    Page<TopicDto> getTopics(int page,int size);
@@ -26,6 +26,7 @@ public interface TopicService {
                                              String field);
    Page<TopicDto> getTopicByAdminWithFilter(int page, int size, String topicName, String organ, String managerName,
                                             String status);
+   Page<TopicDto> getNotApproveTopicListByAdminWithFilter(int page, int size,String organ);
 //   TopicDto getTopicByUID(String uid);
 //   long countTopicByStatusId(Integer organId,Integer statusId);
 //   long countTopicByStatusName(Integer organId,String statusName);

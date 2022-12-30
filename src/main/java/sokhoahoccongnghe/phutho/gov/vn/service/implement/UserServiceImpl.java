@@ -1,17 +1,25 @@
 package sokhoahoccongnghe.phutho.gov.vn.service.implement;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sokhoahoccongnghe.phutho.gov.vn.dto.UserDto;
+import sokhoahoccongnghe.phutho.gov.vn.entity.Organ;
+import sokhoahoccongnghe.phutho.gov.vn.entity.Role;
 import sokhoahoccongnghe.phutho.gov.vn.entity.User;
 import sokhoahoccongnghe.phutho.gov.vn.exception.NotFoundException;
+import sokhoahoccongnghe.phutho.gov.vn.mapper.RoleMapper;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.UserMapper;
+import sokhoahoccongnghe.phutho.gov.vn.model.RoleNameEnum;
 import sokhoahoccongnghe.phutho.gov.vn.repository.UserRepository;
+import sokhoahoccongnghe.phutho.gov.vn.service.RoleService;
 import sokhoahoccongnghe.phutho.gov.vn.service.UserService;
-
-import java.util.Optional;
+import sokhoahoccongnghe.phutho.gov.vn.util.GetEntityById;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,6 +29,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private RoleMapper roleMapper;
     @Override
     public UserDto getUserByUsername(String username) {
         return userRepository.findByUsername(username).map(userMapper::entity2Dto)
@@ -37,5 +51,27 @@ public class UserServiceImpl implements UserService {
     public UserDto createUser(UserDto userRequest) {
         User createdUser = userRepository.save(userMapper.dto2Entity(userRequest));
         return userMapper.entity2Dto(createdUser);
+    }
+
+    @Override
+    public Page<UserDto> getAll(int page, int size,String organ,String username) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createDate");//tạo sau thì hiển thị trước
+        Pageable paging = PageRequest.of(page, size, sort);
+        Gson gson = new Gson();
+        Organ organFilterEntity = gson.fromJson(organ,Organ.class);
+        Role adminRole = roleService
+                .getRoleByName(RoleNameEnum.ADMIN)
+                .map(roleMapper::dto2Entity)
+                .orElseThrow(()->new NotFoundException("role"));
+        Page<User> userPageEntity = userRepository.getAll(adminRole,organFilterEntity,username,paging);
+        return userPageEntity.map(userMapper::entity2Dto);
+    }
+
+    @Override
+    public void disableUser(Integer userId) {
+        User userEntity = GetEntityById.getEntity(userRepository,userId);
+        //toggle
+        userEntity.setDisabled(!userEntity.isDisabled());
+        userRepository.save(userEntity);
     }
 }

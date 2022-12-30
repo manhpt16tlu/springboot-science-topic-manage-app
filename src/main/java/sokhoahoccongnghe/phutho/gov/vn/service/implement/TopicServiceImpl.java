@@ -170,6 +170,23 @@ public class TopicServiceImpl implements TopicService {
         return topicPageEntity.map(topicMapper::entity2Dto);
     }
 
+    @Override
+    public Page<TopicDto> getNotApproveTopicListByAdminWithFilter(int page, int size,String organ) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createDate");//tạo sau thì hiển thị trước
+        Pageable paging = PageRequest.of(page, size, sort);
+        TopicStatus notApprovedStatus =
+                statusMapper.dto2Entity(topicStatusService.getByName(TopicStatusEnum.CHUA_DUYET.getValue()));
+
+        Gson gson = new Gson();
+        Organ organFilterEntity = gson.fromJson(organ,Organ.class);
+
+        Page<Topic> topicPageEntity = topicRepository.findByStatusWithFilter(
+                notApprovedStatus,
+                organFilterEntity,
+                paging);
+        return topicPageEntity.map(topicMapper::entity2Dto);
+    }
+
 //    @Override
 //    public TopicDto getTopicByUID(String uid) {
 //        Topic topicEntity = topicRepository.findFirstByUid(uid);
@@ -299,16 +316,12 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void approveTopic(Integer topicId, TopicDto topicRequest) {
-        if (topicRequest.getTopicStatus() != null && topicRequest.getTopicStatus().getTitle() != null) {
-            TopicStatus statusEntity = statusRepository.findFirstByTitle(topicRequest.getTopicStatus().getTitle());
-            System.out.println(statusEntity);
-            if (statusEntity != null) {
-                Topic topicEntity = GetEntityById.getEntity(topicRepository, topicId);
-                topicEntity.setTopicStatus(statusEntity);
-                topicRepository.save(topicEntity);
-            } else throw new NotFoundException("status");
-        } else throw new NullPropertyException();
+    @Transactional(rollbackFor = {RuntimeException.class})
+    public void approveTopic(Integer topicId) {
+        Topic topicEntity = GetEntityById.getEntity(topicRepository, topicId);
+        TopicStatus statusEntity = statusMapper.dto2Entity(topicStatusService.getByName(TopicStatusEnum.DA_PHE_DUYET.getValue()));
+        topicEntity.setTopicStatus(statusEntity);
+        topicRepository.save(topicEntity);
     }
 
     //deprecated

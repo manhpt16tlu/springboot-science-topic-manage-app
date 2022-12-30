@@ -19,9 +19,12 @@ public class FormController {
 
     @GetMapping
     public ResponseEntity<Object> getAll(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "7") int size) {
+                                         @RequestParam(defaultValue = "7") int size,
+                                         @RequestParam(required = false,name="name") String formName,
+                                         @RequestParam(required = false,name="type") String formType
+    ) {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                formService.getAllForm(page,size),true);
+                formService.getAllForm(page,size,formName,formType),true);
     }
 
     @PostMapping

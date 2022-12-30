@@ -8,5 +8,5 @@ public interface FormService {
     boolean existByName(String name);
     FormDto getFormById(Integer formId);
     void deleteById(Integer formId);
-    Page<FormDto> getAllForm(int page,int size);
+    Page<FormDto> getAllForm(int page,int size,String formName,String formType);
 }

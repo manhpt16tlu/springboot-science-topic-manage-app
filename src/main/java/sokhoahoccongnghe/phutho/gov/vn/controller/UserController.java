@@ -38,4 +38,22 @@ public class UserController {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 userDetails,true);
     }
+    @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Object> getAll(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "7") int size,
+                                         @RequestParam(required = false,name = "organ") String organ,
+                                         @RequestParam(required = false,name = "username") String username
+                                         ) {
+
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                userService.getAll( page,  size,organ,username),true);
+    }
+    @PatchMapping(value = "/disable/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Object> toggleDisableUser(@PathVariable Integer id) {
+        userService.disableUser(id);
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                null,true);
+    }
 }

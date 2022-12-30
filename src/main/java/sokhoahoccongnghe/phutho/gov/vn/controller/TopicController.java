@@ -109,6 +109,7 @@ public class TopicController {
 //    }
 
     @PutMapping(value = "/topic/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> updateTopic(@PathVariable Integer id, @RequestBody TopicDto topicRequest) {
         topicService.updateTopic(id, topicRequest);
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
@@ -117,8 +118,9 @@ public class TopicController {
 
     //special update method
     @PatchMapping(value = "/approve_topic/{id}")
-    public ResponseEntity<Object> approveTopic(@PathVariable Integer id, @RequestBody TopicDto topicRequest) {
-        topicService.approveTopic(id, topicRequest);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Object> approveTopic(@PathVariable Integer id) {
+        topicService.approveTopic(id);
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 null, true);
     }
@@ -164,6 +166,18 @@ public class TopicController {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicService.employeeCreateTopic(topicRequest), true);
 
+    }
+
+    @GetMapping(value = {"/topic/adminGetTopics/not_approved"})
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Object> adminGetTopicsNeedApprove( @RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "7") int size,
+                                                             @RequestParam(required = false,name = "organ") String organ
+
+    ) {
+        System.out.println(organ);
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.getNotApproveTopicListByAdminWithFilter(page,size,organ), true);
     }
 
     @GetMapping(value = {"/topic/adminGetTopics"})
