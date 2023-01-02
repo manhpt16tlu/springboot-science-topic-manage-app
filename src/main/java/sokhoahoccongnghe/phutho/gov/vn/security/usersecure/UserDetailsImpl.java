@@ -77,7 +77,7 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return !disabled;
-    } // có thể bỏ do đã handle ở UserDetailService
+    }
 
     public Integer getId() {
         return id;

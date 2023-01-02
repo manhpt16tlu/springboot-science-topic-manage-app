@@ -7,6 +7,8 @@ import sokhoahoccongnghe.phutho.gov.vn.mapper.RankMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.RankRepository;
 import sokhoahoccongnghe.phutho.gov.vn.service.RankService;
 
+import java.util.List;
+
 @Service
 public class RankServiceImpl implements RankService {
     @Autowired
@@ -16,5 +18,10 @@ public class RankServiceImpl implements RankService {
     @Override
     public RankDto getRankByName(String name) {
         return rankMapper.entity2Dto(rankRepository.findByName(name));
+    }
+
+    @Override
+    public List<RankDto> getAll() {
+        return rankMapper.listEntity2Dto(rankRepository.findAll());
     }
 }

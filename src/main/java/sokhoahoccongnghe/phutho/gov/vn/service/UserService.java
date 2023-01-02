@@ -1,9 +1,8 @@
 package sokhoahoccongnghe.phutho.gov.vn.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UserDetails;
 import sokhoahoccongnghe.phutho.gov.vn.dto.UserDto;
-
-import java.util.Optional;
 
 public interface UserService {
     UserDto getUserByUsername(String username);
@@ -11,4 +10,7 @@ public interface UserService {
     UserDto createUser(UserDto userRequest);
     Page<UserDto> getAll(int page, int size,String organ,String username);
     void disableUser(Integer userId);
+    void updateInformation(Integer userId,UserDto userRequest);
+    void changePassword(String newPass,String oldPass);
+    UserDetails getPrincipal();
 }

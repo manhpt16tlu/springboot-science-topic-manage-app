@@ -175,7 +175,6 @@ public class TopicController {
                                                              @RequestParam(required = false,name = "organ") String organ
 
     ) {
-        System.out.println(organ);
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicService.getNotApproveTopicListByAdminWithFilter(page,size,organ), true);
     }

@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import sokhoahoccongnghe.phutho.gov.vn.dto.UserDto;
 import sokhoahoccongnghe.phutho.gov.vn.model.MessageEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
 import sokhoahoccongnghe.phutho.gov.vn.service.UserService;
@@ -33,10 +31,8 @@ public class UserController {
     @GetMapping(value = "/getPrincipal")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> getPrincipal() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                userDetails,true);
+                userService.getPrincipal(),true);
     }
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -56,4 +52,21 @@ public class UserController {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 null,true);
     }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<Object> updateInformation(@PathVariable Integer id,@RequestBody UserDto userRequest) {
+        userService.updateInformation(id,userRequest);
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                null, true);
+    }
+    @PatchMapping(value = "/changepassword")
+    public ResponseEntity<Object> changePassword(@RequestParam(name = "oldPass") String oldPass,
+                                                 @RequestParam(name="newPass") String newPass
+                                                 ) {
+        userService.changePassword(newPass,oldPass);
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                null, true);
+    }
+
+
 }
