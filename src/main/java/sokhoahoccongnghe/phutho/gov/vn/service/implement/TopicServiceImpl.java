@@ -220,6 +220,35 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    public long countTopicByManagerAndStatus(String statusName, String username) {
+        TopicStatusDto statusDto = topicStatusService.getByName(statusName);
+        TopicStatus statusEntity = statusMapper.dto2Entity(statusDto);
+       return topicRepository.countTopicByManagerAndStatus(username,statusEntity);
+
+    }
+
+    @Override
+    public long countTopicByManagerAndResult(String resultName, String username) {
+        TopicResultDto resultDto = topicResultService.getResultByName(resultName);
+        TopicResult resultEntity = resultMapper.dto2Entity(resultDto);
+        return topicRepository.countTopicByManagerAndResult(username,resultEntity);
+    }
+
+    @Override
+    public long countTopicByStatus(String statusName) {
+        TopicStatusDto statusDto = topicStatusService.getByName(statusName);
+        TopicStatus statusEntity = statusMapper.dto2Entity(statusDto);
+        return topicRepository.countTopicByManagerAndStatus(null,statusEntity);
+    }
+
+    @Override
+    public long countTopicByResult(String resultName) {
+        TopicResultDto resultDto = topicResultService.getResultByName(resultName);
+        TopicResult resultEntity = resultMapper.dto2Entity(resultDto);
+        return topicRepository.countTopicByManagerAndResult(null,resultEntity);
+    }
+
+    @Override
     public boolean existByName(String name) {
         return topicRepository.existsByName(name);
     }

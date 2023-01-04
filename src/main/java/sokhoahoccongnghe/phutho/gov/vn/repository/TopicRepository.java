@@ -63,4 +63,10 @@ public interface TopicRepository extends JpaRepository<Topic,Integer> {
     long countByName(String name);
     boolean existsByName(String name);
 
+    @Query(value = "select count(t) from Topic t where (:username is null or t.manager.username = :username) and t.topicStatus = :status")
+    long countTopicByManagerAndStatus(@Param("username") String username,@Param("status") TopicStatus status);
+
+    @Query(value = "select count(t) from Topic t where (:username is null or t.manager.username = :username) and t.topicResult = :result")
+    long countTopicByManagerAndResult(@Param("username") String username,@Param("result") TopicResult result);
+
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFieldDto;
@@ -13,6 +14,7 @@ import sokhoahoccongnghe.phutho.gov.vn.entity.TopicStatus;
 import sokhoahoccongnghe.phutho.gov.vn.model.MessageEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
 import sokhoahoccongnghe.phutho.gov.vn.service.TopicService;
+import sokhoahoccongnghe.phutho.gov.vn.service.UserService;
 
 import java.util.List;
 
@@ -22,6 +24,9 @@ import java.util.List;
 public class TopicController {
     @Autowired
     private TopicService topicService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = "/topic/nopaging")
     public ResponseEntity<Object> getTopicsNoPaging() {
@@ -201,5 +206,34 @@ public class TopicController {
                                                    @RequestParam(required = false) String status) {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 topicService.getTopicByUsernameWithFilter(page,size,username,topicName,status,field), true);
+    }
+    @GetMapping(value = "/topic/countByManagerAndStatus")
+    public ResponseEntity<Object> countByManagerAndStatus(@RequestParam(name = "status") String statusName
+                                                          ) {
+        UserDetails currentUser = userService.getPrincipal();
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.countTopicByManagerAndStatus(statusName,currentUser.getUsername()), true);
+    }
+    @GetMapping(value = "/topic/countByManagerAndResult")
+    public ResponseEntity<Object> countByManagerAndResult(@RequestParam(name = "result") String resultName
+    ) {
+        UserDetails currentUser = userService.getPrincipal();
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.countTopicByManagerAndResult(resultName,currentUser.getUsername()), true);
+    }
+
+    @GetMapping(value = "/topic/countByStatus")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Object> countByStatus(@RequestParam(name = "status") String statusName
+    ) {
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.countTopicByStatus(statusName), true);
+    }
+    @GetMapping(value = "/topic/countByResult")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Object> countByResult(@RequestParam(name = "result") String resultName
+    ) {
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                topicService.countTopicByResult(resultName), true);
     }
 }

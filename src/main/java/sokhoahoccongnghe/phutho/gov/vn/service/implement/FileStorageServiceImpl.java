@@ -28,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Service
 public class FileStorageServiceImpl implements FileStorageService {
@@ -76,7 +78,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
             String fileServerName = fileCode+"_"+
-                    VietnamStringNormalize.normalize(org.apache.commons.lang3.StringUtils.deleteWhitespace(topicFileTypeNeedSave.getTitle().toLowerCase()))+
+                    VietnamStringNormalize.normalize(org.apache.commons.lang3.StringUtils.deleteWhitespace(topicFileTypeNeedSave.getTitle().toLowerCase()))+"_"+ getLocalDateNow() +
                     "."+fileExtension;
             fileNeedSave.setServerName(fileServerName);
             Path filePath = topicRootFolder.resolve(fileServerName);
@@ -155,7 +157,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
             String fileServerName = fileCode+"_"+
-                    VietnamStringNormalize.normalize(org.apache.commons.lang3.StringUtils.deleteWhitespace(formNeedUpload.getType().getTitle().toLowerCase()))+
+                    VietnamStringNormalize.normalize(org.apache.commons.lang3.StringUtils.deleteWhitespace(formNeedUpload.getType().getTitle().toLowerCase()))+"_"+ getLocalDateNow() +
                     "."+fileExtension;
             fileNeedSave.setServerName(fileServerName);
             Path filePath = formRootFolder.resolve(fileServerName);
@@ -165,6 +167,10 @@ public class FileStorageServiceImpl implements FileStorageService {
         return fileNeedSave;
     }
 
+    private LocalDate getLocalDateNow(){
+        ZoneId zoneId = ZoneId.of("VST",ZoneId.SHORT_IDS);
+        return LocalDate.now(zoneId);
+    }
 //    @Override
 //    public boolean checkExistInFileSystem(String fileName) {
 //        Path filePath = rootFolder.resolve(fileName);

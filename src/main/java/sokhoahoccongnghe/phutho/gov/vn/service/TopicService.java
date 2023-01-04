@@ -32,6 +32,9 @@ public interface TopicService {
 //   long countTopicByStatusName(Integer organId,String statusName);
 //   long countTopicByResult(Integer organId,Integer resultId);
    long countTopicByName(String name);
-
+   long countTopicByManagerAndStatus(String statusName,String username);
+   long countTopicByManagerAndResult(String resultName,String username);
+   long countTopicByStatus(String statusName);
+   long countTopicByResult(String resultName);
    boolean existByName(String name);
 }
