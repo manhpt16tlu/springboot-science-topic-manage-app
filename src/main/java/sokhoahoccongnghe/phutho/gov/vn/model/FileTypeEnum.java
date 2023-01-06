@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum FileTypeEnum {
     FORM("form"),
-    TOPIC("topic");
+    TOPIC("topic"),
+    AVATAR("avatar");
     private final String value;
 }

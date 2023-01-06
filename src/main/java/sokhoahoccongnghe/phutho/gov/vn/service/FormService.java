@@ -7,6 +7,6 @@ public interface FormService {
     FormDto createForm(FormDto formRequest);
     boolean existByName(String name);
     FormDto getFormById(Integer formId);
-    void deleteById(Integer formId);
+    String deleteById(Integer formId);
     Page<FormDto> getAllForm(int page,int size,String formName,String formType);
 }

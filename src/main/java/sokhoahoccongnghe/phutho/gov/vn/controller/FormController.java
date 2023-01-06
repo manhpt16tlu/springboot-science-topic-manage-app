@@ -34,13 +34,7 @@ public class FormController {
                 formService.createForm(formRequest) ,
                 true);
     }
-    @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Object> deleteForm(@PathVariable Integer id) {
-        formService.deleteById(id);
-        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                null, true);
-    }
+
     @GetMapping(value = "/existByName")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> existByFormName(@RequestParam String name){

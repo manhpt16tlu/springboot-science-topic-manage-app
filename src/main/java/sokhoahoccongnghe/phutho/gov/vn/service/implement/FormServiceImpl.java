@@ -12,24 +12,18 @@ import sokhoahoccongnghe.phutho.gov.vn.dto.FormDto;
 import sokhoahoccongnghe.phutho.gov.vn.dto.FormFileDto;
 import sokhoahoccongnghe.phutho.gov.vn.entity.Form;
 import sokhoahoccongnghe.phutho.gov.vn.entity.FormType;
-import sokhoahoccongnghe.phutho.gov.vn.exception.FileDeleteException;
 import sokhoahoccongnghe.phutho.gov.vn.mapper.FormMapper;
 import sokhoahoccongnghe.phutho.gov.vn.repository.FormRepository;
-import sokhoahoccongnghe.phutho.gov.vn.service.FileStorageService;
 import sokhoahoccongnghe.phutho.gov.vn.service.FormFileService;
 import sokhoahoccongnghe.phutho.gov.vn.service.FormService;
 import sokhoahoccongnghe.phutho.gov.vn.util.GetEntityById;
 
-import java.io.IOException;
 import java.util.Date;
 
 @Service
 public class FormServiceImpl implements FormService {
     @Autowired
     private FormRepository formRepository;
-
-    @Autowired
-    private FileStorageService fileStorageService;
 
     @Autowired
     private FormFileService formFileService;
@@ -55,21 +49,12 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    @Transactional(rollbackFor = {IOException.class,RuntimeException.class})
-    //xóa file cả ở db và filesystem
-    public void deleteById(Integer formId) {
+    @Transactional
+    public String deleteById(Integer formId) {
         Form formNeedDelete = GetEntityById.getEntity(formRepository,formId);
         FormFileDto formFileNeedDelete = formFileService.getByFormId(formNeedDelete.getId());
-        if(formFileNeedDelete != null) {
-            //delete from file system
-            try {
-                fileStorageService.deleteFile(formFileNeedDelete.getServerName());
-            } catch (IOException e) {
-                throw new FileDeleteException("can not delete file", e);
-            }
-        }
-        //delete from db
         formRepository.delete(formNeedDelete);
+        return formFileNeedDelete.getServerName();
     }
 
     @Override

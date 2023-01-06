@@ -3,13 +3,14 @@ package sokhoahoccongnghe.phutho.gov.vn.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sokhoahoccongnghe.phutho.gov.vn.dto.TopicFileDto;
 import sokhoahoccongnghe.phutho.gov.vn.model.MessageEnum;
 import sokhoahoccongnghe.phutho.gov.vn.model.ResponseBaseModel;
 import sokhoahoccongnghe.phutho.gov.vn.service.UploadAndDownloadService;
-import sokhoahoccongnghe.phutho.gov.vn.util.VietnamStringNormalize;
+import sokhoahoccongnghe.phutho.gov.vn.service.UserService;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -19,6 +20,9 @@ public class UploadAndDownloadController {
 
     @Autowired
     private UploadAndDownloadService updownService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping(value = "/upload/topic")
     public ResponseEntity<Object> uploadTopicFile(@RequestParam(name = "fileUpload") MultipartFile fileUpload,
@@ -50,5 +54,24 @@ public class UploadAndDownloadController {
                 .build();
         headers.setContentDisposition(contentDisposition);
         return new ResponseEntity<>(fileResource,headers,HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/upload/avatar")
+    public ResponseEntity<Object> uploadUserAvatarFile(@RequestParam(name = "fileUpload") MultipartFile fileUpload) {
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                updownService.uploadAvatarFile(fileUpload), true);
+    }
+    @DeleteMapping(value = "/delete/avatar")
+    public ResponseEntity<Object> deleteAvatarOfCurrentUser() {
+        updownService.deleteAvatar(userService.getPrincipal().getUsername());
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                null,true);
+    }
+    @DeleteMapping(value = "/delete/form/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Object> deleteForm(@PathVariable Integer id) {
+        updownService.deleteForm(id);
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                null, true);
     }
 }
