@@ -12,6 +12,7 @@ public interface TopicService {
    TopicDto employeeCreateTopic(TopicDto topicRequest);
    void updateTopic(Integer id,TopicDto topicRequest);
    void deleteTopic(Integer id);
+   void softDeleteTopic(Integer id);
    void approveTopic(Integer topicId);
    List<TopicDto> getTopicsByField(Integer fieldId);
    List<TopicDto> getTopicsNoPaging();

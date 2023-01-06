@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@SQLDelete(sql = "update de_tai set xoa = true WHERE ma=?") //override delete
+//@SQLDelete(sql = "update de_tai set xoa = true WHERE ma=?") //override delete
 @Where(clause = "xoa = false") // filter bản ghi
 @Table(name = "de_tai")
 public class Topic {

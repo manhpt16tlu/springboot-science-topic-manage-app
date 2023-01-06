@@ -137,6 +137,12 @@ public class TopicController {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
                 null, true);
     }
+    @DeleteMapping(value = "/topic/softDelete/{id}")
+    public ResponseEntity<Object> softDeleteTopic(@PathVariable Integer id) {
+        topicService.softDeleteTopic(id);
+        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
+                null, true);
+    }
 //    @GetMapping(value = "/topic/countByStatusId")
 //    public ResponseEntity<Object> countTopicByStatusId(@RequestParam int organId, @RequestParam int statusId){
 //        return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,

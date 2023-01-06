@@ -3,6 +3,7 @@ package sokhoahoccongnghe.phutho.gov.vn.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -69,4 +70,8 @@ public interface TopicRepository extends JpaRepository<Topic,Integer> {
     @Query(value = "select count(t) from Topic t where (:username is null or t.manager.username = :username) and t.topicResult = :result")
     long countTopicByManagerAndResult(@Param("username") String username,@Param("result") TopicResult result);
 
+    @Modifying
+//    @Query(value = "update de_tai set xoa = true WHERE ma=?",nativeQuery = true) // native sql
+    @Query(value = "update Topic t set t.deleted = true where t.id = :id") // jpql
+    void softDeleteTopicById(@Param("id") Integer id);
 }

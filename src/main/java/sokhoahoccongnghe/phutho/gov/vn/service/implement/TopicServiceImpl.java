@@ -345,6 +345,12 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    @Transactional
+    public void softDeleteTopic(Integer id) {
+        topicRepository.softDeleteTopicById(id);
+    }
+
+    @Override
     @Transactional(rollbackFor = {RuntimeException.class})
     public void approveTopic(Integer topicId) {
         Topic topicEntity = GetEntityById.getEntity(topicRepository, topicId);
