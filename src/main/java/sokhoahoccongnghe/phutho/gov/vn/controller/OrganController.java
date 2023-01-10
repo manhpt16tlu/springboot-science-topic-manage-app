@@ -26,10 +26,11 @@ public class OrganController {
 
     @GetMapping
     public ResponseEntity<Object> getAllWithFilter(@RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "7") int size
+                                                  @RequestParam(defaultValue = "7") int size,
+                                                   @RequestParam(required = false,name="name") String organName
                                                   ) {
         return ResponseBaseModel.responseBuidler(MessageEnum.REQUEST_SUCCESS.getValue(), HttpStatus.OK,
-                organService.getAllWithFilter(page, size), true);
+                organService.getAllWithFilter(page, size,organName), true);
     }
 
     @GetMapping(value = "/existByName/{name}")

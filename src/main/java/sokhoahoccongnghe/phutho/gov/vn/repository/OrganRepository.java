@@ -26,6 +26,6 @@ public interface OrganRepository extends JpaRepository<Organ,Integer> {
     List<CountTopicOfOrganView> findByStatusWhichNeedApprove();
     boolean existsByName(String name);
 
-    @Query(value = "select o from Organ o")
-    Page<Organ> findAllWithFilter(Pageable p);
+    @Query(value = "select o from Organ o where (:name is null or o.name like %:name%)")
+    Page<Organ> findAllWithFilter(@Param("name") String name,Pageable p);
 }

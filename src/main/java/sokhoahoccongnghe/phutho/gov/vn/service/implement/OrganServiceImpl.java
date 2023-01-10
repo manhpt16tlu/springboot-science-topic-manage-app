@@ -34,10 +34,11 @@ public class OrganServiceImpl implements OrganService {
     }
 
     @Override
-    public Page<OrganDto> getAllWithFilter(int page, int size) {
+    public Page<OrganDto> getAllWithFilter(int page, int size,String name) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createDate");//tạo sau thì hiển thị trước
         Pageable paging = PageRequest.of(page, size, sort);
-        Page<Organ> organPageEntity = organRepository.findAllWithFilter(paging);
+
+        Page<Organ> organPageEntity = organRepository.findAllWithFilter(name,paging);
         return organPageEntity.map(organMapper::entity2Dto);
     }
 
