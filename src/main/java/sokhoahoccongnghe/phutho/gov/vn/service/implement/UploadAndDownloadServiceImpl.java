@@ -104,10 +104,12 @@ public class UploadAndDownloadServiceImpl implements UploadAndDownloadService {
     @Transactional
     public void deleteForm(Integer formId) {
         String deletedFileName = formService.deleteById(formId);
-        try {
-            fileStorageService.deleteFile(deletedFileName, FileTypeEnum.FORM.getValue());
-        } catch (IOException e) {
-            throw new FileDeleteException("can not delete file", e);
+        if(deletedFileName != null) {
+            try {
+                fileStorageService.deleteFile(deletedFileName, FileTypeEnum.FORM.getValue());
+            } catch (IOException e) {
+                throw new FileDeleteException("can not delete file", e);
+            }
         }
     }
 

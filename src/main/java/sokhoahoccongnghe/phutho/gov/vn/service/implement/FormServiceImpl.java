@@ -54,7 +54,8 @@ public class FormServiceImpl implements FormService {
         Form formNeedDelete = GetEntityById.getEntity(formRepository,formId);
         FormFileDto formFileNeedDelete = formFileService.getByFormId(formNeedDelete.getId());
         formRepository.delete(formNeedDelete);
-        return formFileNeedDelete.getServerName();
+        if(formFileNeedDelete!=null) return formFileNeedDelete.getServerName();
+        return null;
     }
 
     @Override
